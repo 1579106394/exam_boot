@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.BankTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.BankTypeDO">
+        <id column="id" property="id" />
+        <result column="bank_id" property="bankId" />
+        <result column="bank_type" property="bankType" />
+        <result column="bank_version" property="bankVersion" />
+        <result column="bank_delete" property="bankDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, bank_id, bank_type, bank_version, bank_delete
+    </sql>
+
+</mapper>

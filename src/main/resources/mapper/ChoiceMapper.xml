@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.ChoiceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.ChoiceDO">
+        <id column="choice_id" property="choiceId" />
+        <result column="choice_title" property="choiceTitle" />
+        <result column="choice_type" property="choiceType" />
+        <result column="choice_score" property="choiceScore" />
+        <result column="choice_difficulty" property="choiceDifficulty" />
+        <result column="choice_bank" property="choiceBank" />
+        <result column="choice_version" property="choiceVersion" />
+        <result column="choice_delete" property="choiceDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        choice_id, choice_title, choice_type, choice_score, choice_difficulty, choice_bank, choice_version, choice_delete
+    </sql>
+
+</mapper>

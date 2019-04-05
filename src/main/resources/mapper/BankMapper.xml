@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.BankMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.BankDO">
+        <id column="bank_id" property="bankId" />
+        <result column="bank_name" property="bankName" />
+        <result column="bank_img" property="bankImg" />
+        <result column="bank_college" property="bankCollege" />
+        <result column="bank_subject" property="bankSubject" />
+        <result column="bank_version" property="bankVersion" />
+        <result column="bank_delete" property="bankDelete" />
+        <association property="college" javaType="com.exam.pojo.DictDO">
+            <id column="college_id" property="dictId" />
+            <result column="college_name" property="dictName" />
+        </association>
+        <association property="subject" javaType="com.exam.pojo.DictDO">
+            <id column="subject_id" property="dictId" />
+            <result column="subject_name" property="dictName" />
+        </association>
+        <collection property="typeList" ofType="com.exam.pojo.TypeDO">
+            <id column="type_id" property="typeId" />
+            <result column="type_name" property="typeName" />
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        bank_id, bank_name, bank_img, bank_college, bank_subject, bank_version, bank_delete
+    </sql>
+
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,college.dict_id college_id, college.dict_name college_name
+        ,subject.dict_id subject_id, subject.dict_name subject_name
+        from ex_bank bank
+        inner join ex_dict college on bank.bank_college = college.dict_id
+        inner join ex_dict subject on bank.bank_subject = subject.dict_id
+        <where>
+            bank_delete = 1
+            <if test="params.bankName!=null and params.bankName!=''">
+                and bank.bank_name like '%${params.bankName}%'
+            </if>
+            <if test="params.bankCollege!=null and params.bankCollege!=''">
+                and bank.bank_college = #{params.bankCollege}
+            </if>
+            <if test="params.bankSubject!=null and params.bankSubject!=''">
+                and bank.bank_subject = #{params.bankSubject}
+            </if>
+        </where>
+        order by
+        <if test="sortName!=null and sortName!=''">
+            ${sortName}, ${sortOrder}
+        </if>
+        <if test="sortName==null || sortName==''">
+            bank_college, bank_subject asc
+        </if>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(bank_id)
+        from ex_bank bank
+        inner join ex_dict college on bank.bank_college = college.dict_id
+        inner join ex_dict subject on bank.bank_subject = subject.dict_id
+        <where>
+            bank_delete = 1
+            <if test="params.bankName!=null and params.bankName!=''">
+                and bank.bank_name like '%${params.bankName}%'
+            </if>
+            <if test="params.bankCollege!=null and params.bankCollege!=''">
+                and bank.bank_college = #{params.bankCollege}
+            </if>
+            <if test="params.bankSubject!=null and params.bankSubject!=''">
+                and bank.bank_subject = #{params.bankSubject}
+            </if>
+        </where>
+    </select>
+
+</mapper>

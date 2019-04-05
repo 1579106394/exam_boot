@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.CompletionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.CompletionDO">
+        <id column="comp_id" property="compId" />
+        <result column="comp_content" property="compContent" />
+        <result column="comp_score" property="compScore" />
+        <result column="comp_difficulty" property="compDifficulty" />
+        <result column="comp_bank" property="compBank" />
+        <result column="comp_version" property="compVersion" />
+        <result column="comp_delete" property="compDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        comp_id, comp_content, comp_score, comp_difficulty, comp_bank, comp_version, comp_delete
+    </sql>
+
+</mapper>

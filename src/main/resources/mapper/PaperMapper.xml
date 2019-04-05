@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.PaperMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.PaperDO">
+        <id column="paper_id" property="paperId" />
+        <result column="paper_title" property="paperTitle" />
+        <result column="paper_start_year" property="paperStartYear" />
+        <result column="paper_end_year" property="paperEndYear" />
+        <result column="paper_comment" property="paperComment" />
+        <result column="paper_college" property="paperCollege" />
+        <result column="paper_major" property="paperMajor" />
+        <result column="paper_bank" property="paperBank" />
+        <result column="paper_flag" property="paperFlag" />
+        <result column="paper_type" property="paperType" />
+        <result column="paper_difficulty" property="paperDifficulty" />
+        <result column="paper_score" property="paperScore" />
+        <result column="paper_create_time" property="paperCreateTime" />
+        <result column="paper_version" property="paperVersion" />
+        <result column="paper_delete" property="paperDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        paper_id, paper_title, paper_start_year, paper_end_year, paper_comment, paper_college, paper_major, paper_bank, paper_flag, paper_type, paper_difficulty, paper_score, paper_create_time, paper_version, paper_delete
+    </sql>
+
+</mapper>

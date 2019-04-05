@@ -1,0 +1,15 @@
+${AnsiColor.BLUE}
+                                         ___
+                                        /\_ \
+   __   __  _    __      ___ ___   _____\//\ \      __
+ /'__`\/\ \/'\ /'__`\  /' __` __`\/\ '__`\\ \ \   /'__`\
+/\  __/\/>  <//\ \L\.\_/\ \/\ \/\ \ \ \L\ \\_\ \_/\  __/
+\ \____\/\_/\_\ \__/.\_\ \_\ \_\ \_\ \ ,__//\____\ \____\
+ \/____/\//\/_/\/__/\/_/\/_/\/_/\/_/\ \ \/ \/____/\/____/
+                                     \ \_\
+                                      \/_/
+        ‧★,:*:‧\(￣ﾟ▽ﾟ￣)/‧:*‧°★*
+ヾ(✿ﾟ▽ﾟ)ノ    启动成功      ✧*｡٩(ﾟ▽ﾟ*)و✧*｡
+${AnsiColor.BLACK}
+Application Version: ${application.version}${application.formatted-version}
+Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}

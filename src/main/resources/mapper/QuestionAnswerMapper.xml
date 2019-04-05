@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.QuestionAnswerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.QuestionAnswerDO">
+        <id column="answer_id" property="answerId" />
+        <result column="answer_content" property="answerContent" />
+        <result column="answer_question" property="answerQuestion" />
+        <result column="answer_resolve" property="answerResolve" />
+        <result column="answer_version" property="answerVersion" />
+        <result column="answer_delete" property="answerDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        answer_id, answer_content, answer_question, answer_resolve, answer_version, answer_delete
+    </sql>
+
+</mapper>

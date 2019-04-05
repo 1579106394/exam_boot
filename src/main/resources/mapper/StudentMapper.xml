@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.StudentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.StudentDO">
+        <id column="stu_id" property="stuId"/>
+        <result column="stu_number" property="stuNumber"/>
+        <result column="stu_password" property="stuPassword"/>
+        <result column="stu_name" property="stuName"/>
+        <result column="stu_sex" property="stuSex"/>
+        <result column="stu_age" property="stuAge"/>
+        <result column="stu_college" property="stuCollege"/>
+        <result column="stu_major" property="stuMajor"/>
+        <result column="stu_img" property="stuImg"/>
+        <result column="stu_card" property="stuCard"/>
+        <result column="stu_entrance_time" property="stuEntranceTime"/>
+        <result column="stu_version" property="stuVersion"/>
+        <result column="stu_delete" property="stuDelete"/>
+        <association property="college" javaType="com.exam.pojo.DictDO">
+            <id column="college_id" property="dictId"/>
+            <result column="college_name" property="dictName"/>
+        </association>
+        <association property="major" javaType="com.exam.pojo.DictDO">
+            <id column="major_id" property="dictId"/>
+            <result column="major_name" property="dictName"/>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        stu_id, stu_number, stu_password, stu_name, stu_sex, stu_age, stu_college, stu_major, stu_img, stu_card, stu_entrance_time, stu_version, stu_delete
+    </sql>
+
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,college.dict_id as college_id, college.dict_name as college_name
+        ,major.dict_id as major_id, major.dict_name as major_name
+        from ex_student stu
+        inner join ex_dict college on stu.stu_college = college.dict_id
+        inner join ex_dict major on stu.stu_major = major.dict_id
+        <where>
+            stu_delete = 1
+            <if test="params.majorId!=null and params.majorId!=''">
+                and major.dict_id = #{params.majorId}
+            </if>
+            <if test="params.collegeId!=null and params.collegeId!=''">
+                and college.dict_id = #{params.collegeId}
+            </if>
+            <if test="params.stuSex!=null and params.stuSex!=''">
+                and stu_sex = #{params.stuSex}
+            </if>
+            <if test="params.startTime!='' and params.startTime!=null and params.endTime != '' and params.endTime != null">
+                and stu_entrance_time <![CDATA[ >= ]]> #{params.startTime}
+                and stu_entrance_time <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+            <if test="params.stuNumber!=null and params.stuNumber!=''">
+                and stu_number like '%${params.stuNumber}%'
+            </if>
+            <if test="params.stuName!=null and params.stuName!=''">
+                and stu_name like '%${params.stuName}%'
+            </if>
+            <if test="params.stuCard!=null and params.stuCard!=''">
+                and stu_card like '%${params.stuCard}%'
+            </if>
+        </where>
+        <if test="sortName==null or sortName==''">
+            order by stu_entrance_time desc
+        </if>
+        <if test="sortName!=null and sortName!=''">
+            order by ${sortName} ${sortOrder}
+        </if>
+        limit #{index}, #{currentCount}
+    </select>
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(stu_id)
+        from ex_student stu
+        inner join ex_dict college on stu.stu_college = college.dict_id
+        inner join ex_dict major on stu.stu_major = major.dict_id
+        <where>
+            stu_delete = 1
+            <if test="params.majorId!=null and params.majorId!=''">
+                and major.dict_id = #{params.majorId}
+            </if>
+            <if test="params.collegeId!=null and params.collegeId!=''">
+                and college.dict_id = #{params.collegeId}
+            </if>
+            <if test="params.stuSex!=null and params.stuSex!=''">
+                and stu_sex = #{params.stuSex}
+            </if>
+            <if test="params.startTime!='' and params.startTime!=null and params.endTime != '' and params.endTime != null">
+                and stu_entrance_time <![CDATA[ >= ]]> #{params.startTime}
+                and stu_entrance_time <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+            <if test="params.stuNumber!=null and params.stuNumber!=''">
+                and stu_number like '%${params.stuNumber}%'
+            </if>
+            <if test="params.stuName!=null and params.stuName!=''">
+                and stu_name like '%${params.stuName}%'
+            </if>
+            <if test="params.stuCard!=null and params.stuCard!=''">
+                and stu_card like '%${params.stuCard}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>
