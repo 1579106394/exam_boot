@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
+import com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -129,6 +131,13 @@ public class TeacherDO implements Serializable {
      */
     @TableField(exist = false)
     private DictDO college;
+
+    /**
+     * 角色
+     * @return
+     */
+    @TableField(exist = false)
+    private List<String> roleList = Lists.newArrayList();
 
     @Override
     public String toString() {

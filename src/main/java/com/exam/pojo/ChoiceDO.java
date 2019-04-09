@@ -1,14 +1,17 @@
 package com.exam.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
+import com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -27,7 +30,7 @@ public class ChoiceDO implements Serializable {
     /**
      * 题目id
      */
-    @TableId(value = "choice_id", type = IdType.AUTO)
+    @TableId(value = "choice_id", type = IdType.INPUT)
     private String choiceId;
 
     /**
@@ -56,6 +59,11 @@ public class ChoiceDO implements Serializable {
     private String choiceBank;
 
     /**
+     * 解析
+     */
+    private String choiceResolve;
+
+    /**
      * 乐观锁
      */
     @Version
@@ -66,6 +74,20 @@ public class ChoiceDO implements Serializable {
      */
     @TableLogic
     private Integer choiceDelete;
+
+    /**
+     * 选项
+     * @return
+     */
+    @TableField(exist = false)
+    private List<ChoiceAnswerDO> choiceAnswer = Lists.newArrayList();
+
+    /**
+     * 正确答案
+     * @return
+     */
+    @TableField(exist = false)
+    private String choiceTrue;
 
     @Override
     public String toString() {

@@ -4,7 +4,10 @@ import com.exam.pojo.BankTypeDO;
 import com.exam.mapper.BankTypeMapper;
 import com.exam.service.BankTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankTypeServiceImpl extends ServiceImpl<BankTypeMapper, BankTypeDO> implements BankTypeService {
 
+    @Autowired
+    private BankTypeMapper bankTypeMapper;
+
+    /**
+     * 根据题库id查询题型
+     * @param bankId
+     * @return
+     */
+    @Override
+    public List<BankTypeDO> getListByBank(String bankId) {
+        return bankTypeMapper.getListByBank(bankId);
+    }
 }

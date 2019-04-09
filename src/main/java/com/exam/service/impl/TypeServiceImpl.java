@@ -52,14 +52,4 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, TypeDO> implements 
         page.setTotalPage((int) Math.ceil((page.getTotalCount() * 1.0) / page.getCurrentCount()));
         return page;
     }
-
-    /**
-     * 根据题库id查询
-     * @param bankId
-     * @return
-     */
-    @Override
-    public List<TypeDO> getByBankId(String bankId) {
-        return typeMapper.getByBankId(bankId);
-    }
 }

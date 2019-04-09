@@ -3,6 +3,8 @@ package com.exam.service;
 import com.exam.pojo.BankTypeDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 题库-题型对应表 服务类
@@ -13,4 +15,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BankTypeService extends IService<BankTypeDO> {
 
+    /**
+     * 根据题库id查询题型
+     * @param bankId
+     * @return
+     */
+    List<BankTypeDO> getListByBank(String bankId);
 }

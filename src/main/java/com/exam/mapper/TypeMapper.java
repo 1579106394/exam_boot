@@ -30,10 +30,4 @@ public interface TypeMapper extends BaseMapper<TypeDO> {
      */
     Integer getCountByPage(Page<TypeDO> page);
 
-    /**
-     * 根据题库id查询
-     * @param bankId
-     * @return
-     */
-    List<TypeDO> getByBankId(String bankId);
 }

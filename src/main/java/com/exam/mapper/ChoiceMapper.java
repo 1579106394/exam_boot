@@ -2,6 +2,9 @@ package com.exam.mapper;
 
 import com.exam.pojo.ChoiceDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.exam.pojo.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,17 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ChoiceMapper extends BaseMapper<ChoiceDO> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    List<ChoiceDO> getListByPage(Page<ChoiceDO> page);
+
+    /**
+     * 查询总数
+     * @param page
+     * @return
+     */
+    Integer getCountByPage(Page<ChoiceDO> page);
 }

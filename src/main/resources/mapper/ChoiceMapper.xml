@@ -4,19 +4,78 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.exam.pojo.ChoiceDO">
-        <id column="choice_id" property="choiceId" />
-        <result column="choice_title" property="choiceTitle" />
-        <result column="choice_type" property="choiceType" />
-        <result column="choice_score" property="choiceScore" />
-        <result column="choice_difficulty" property="choiceDifficulty" />
-        <result column="choice_bank" property="choiceBank" />
-        <result column="choice_version" property="choiceVersion" />
-        <result column="choice_delete" property="choiceDelete" />
+        <id column="choice_id" property="choiceId"/>
+        <result column="choice_title" property="choiceTitle"/>
+        <result column="choice_type" property="choiceType"/>
+        <result column="choice_score" property="choiceScore"/>
+        <result column="choice_difficulty" property="choiceDifficulty"/>
+        <result column="choice_bank" property="choiceBank"/>
+        <result column="choice_resolve" property="choiceResolve"/>
+        <result column="choice_version" property="choiceVersion"/>
+        <result column="choice_delete" property="choiceDelete"/>
+        <collection property="choiceAnswer" ofType="com.exam.pojo.ChoiceAnswerDO">
+            <id column="answer_id" property="answerId"/>
+            <result column="answer_number" property="answerNumber"/>
+            <result column="answer_content" property="answerContent"/>
+            <result column="answer_choice" property="answerChoice"/>
+            <result column="answer_true" property="answerTrue"/>
+            <result column="answer_resolve" property="answerResolve"/>
+        </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        choice_id, choice_title, choice_type, choice_score, choice_difficulty, choice_bank, choice_version, choice_delete
+        choice_id, choice_title, choice_type, choice_score, choice_difficulty, choice_bank, choice_resolve, choice_version, choice_delete
     </sql>
+
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number ,answer_content ,answer_true FROM (
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        ex_choice
+        <where>
+            choice_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and choice_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and choice_type = #{params.typeId}
+            </if>
+            <if test="params.choiceDifficulty!=null and params.choiceDifficulty!=''">
+                and choice_difficulty = #{params.choiceDifficulty}
+            </if>
+            <if test="params.choiceTitle!=null and params.choiceTitle!=''">
+                and choice_title like '%${params.choiceTitle}%'
+            </if>
+        </where>
+        order by choice_difficulty asc
+        limit #{index}, #{currentCount}
+        ) ex_choice
+        LEFT JOIN ex_choice_answer ON choice_id = answer_choice
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(choice_id)
+        from ex_choice
+        <where>
+            choice_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and choice_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and choice_type = #{params.typeId}
+            </if>
+            <if test="params.choiceDifficulty!=null and params.choiceDifficulty!=''">
+                and choice_difficulty = #{params.choiceDifficulty}
+            </if>
+            <if test="params.choiceTitle!=null and params.choiceTitle!=''">
+                and choice_title like '%${params.choiceTitle}%'
+            </if>
+        </where>
+    </select>
 
 </mapper>

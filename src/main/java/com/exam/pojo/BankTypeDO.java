@@ -1,5 +1,6 @@
 package com.exam.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -47,6 +48,13 @@ public class BankTypeDO implements Serializable {
      */
     @TableLogic
     private Integer bankDelete;
+
+    /**
+     * 题型
+     * @return
+     */
+    @TableField(exist = false)
+    private TypeDO type;
 
     @Override
     public String toString() {

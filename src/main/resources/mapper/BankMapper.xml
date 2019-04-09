@@ -52,7 +52,7 @@
         </where>
         order by
         <if test="sortName!=null and sortName!=''">
-            ${sortName}, ${sortOrder}
+            order by ${sortName} ${sortOrder}
         </if>
         <if test="sortName==null || sortName==''">
             bank_college, bank_subject asc

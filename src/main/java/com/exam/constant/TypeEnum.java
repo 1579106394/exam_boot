@@ -12,8 +12,8 @@ public enum TypeEnum {
 
     ONE_CHOICE(1, "单项选择题"),
     MANY_CHOICE(2, "多项选择题"),
-    COMPLETION(3, "填空题"),
-    JUDGEMENT(4, "判断题"),
+    COMPLETION(4, "填空题"),
+    JUDGEMENT(3, "判断题"),
     PROGRAMMING(5, "编程题"),
     OTHER(6, "其他题")
     ;

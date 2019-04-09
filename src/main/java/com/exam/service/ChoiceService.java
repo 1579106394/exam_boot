@@ -2,6 +2,7 @@ package com.exam.service;
 
 import com.exam.pojo.ChoiceDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.exam.pojo.Page;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ChoiceService extends IService<ChoiceDO> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    Page<ChoiceDO> getByPage(Page<ChoiceDO> page);
 }

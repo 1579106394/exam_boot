@@ -26,7 +26,7 @@
             </if>
         </where>
         <if test="sortName!=null and sortName!=''">
-            ${sortName}, ${sortOrder}
+            order by ${sortName} ${sortOrder}
         </if>
         limit #{index}, #{currentCount}
     </select>
@@ -41,15 +41,4 @@
             </if>
         </where>
     </select>
-
-    <select id="getByBankId" resultType="com.exam.pojo.TypeDO">
-        select
-        <include refid="Base_Column_List"></include>
-        ,bank_id
-        from ex_type t
-        inner join ex_bank_type bt on t.type_id = bt.type_id
-        where t.type_id = 1
-        and bt.bank_id = #{value}
-    </select>
-
 </mapper>

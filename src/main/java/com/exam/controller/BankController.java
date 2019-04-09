@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exam.constant.ResultEnum;
 import com.exam.pojo.BankDO;
 import com.exam.pojo.Page;
-import com.exam.pojo.TypeDO;
 import com.exam.service.BankService;
 import com.exam.service.BankTypeService;
 import com.exam.service.TypeService;
@@ -141,20 +140,6 @@ public class BankController {
             page = bankService.getListByPage(page);
             return Result.ok(page);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.build(ResultEnum.ERROR.getCode(), "查询失败！");
-        }
-    }
-
-    /**
-     * 根据题库id查询
-     */
-    @RequestMapping(value = "/list/{bankId}", method = RequestMethod.GET)
-    public Result list(@PathVariable String bankId) {
-        try {
-            List<TypeDO> list = typeService.getByBankId(bankId);
-            return Result.ok(list);
-        }catch (Exception e) {
             e.printStackTrace();
             return Result.build(ResultEnum.ERROR.getCode(), "查询失败！");
         }

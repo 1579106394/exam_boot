@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.exam.pojo.ChoiceAnswerDO">
         <id column="answer_id" property="answerId" />
-        <result column="answer_numer" property="answerNumer" />
+        <result column="answer_number" property="answerNumber" />
         <result column="answer_content" property="answerContent" />
         <result column="answer_choice" property="answerChoice" />
         <result column="answer_true" property="answerTrue" />

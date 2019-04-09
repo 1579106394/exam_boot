@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.exam.pojo.Page;
 import com.exam.pojo.TypeDO;
 
-import java.util.List;
-
 /**
  * <p>
  * 题型表 服务类
@@ -22,11 +20,4 @@ public interface TypeService extends IService<TypeDO> {
      * @return
      */
     Page<TypeDO> getListByPage(Page<TypeDO> page);
-
-    /**
-     * 根据题库id查询
-     * @param bankId
-     * @return
-     */
-    List<TypeDO> getByBankId(String bankId);
 }

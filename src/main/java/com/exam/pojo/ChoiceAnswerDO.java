@@ -26,13 +26,13 @@ public class ChoiceAnswerDO implements Serializable {
     /**
      * id
      */
-    @TableId(value = "answer_id", type = IdType.AUTO)
+    @TableId(value = "answer_id", type = IdType.INPUT)
     private String answerId;
 
     /**
      * 选项，ABCDEFG
      */
-    private String answerNumer;
+    private String answerNumber;
 
     /**
      * 选项内容
@@ -47,7 +47,7 @@ public class ChoiceAnswerDO implements Serializable {
     /**
      * 1正确0错误
      */
-    private Integer answerTrue;
+    private Boolean answerTrue;
 
     /**
      * 解析
@@ -70,7 +70,7 @@ public class ChoiceAnswerDO implements Serializable {
     public String toString() {
         return "ChoiceAnswerDO{" +
         "answerId=" + answerId +
-        ", answerNumer=" + answerNumer +
+        ", answerNumber=" + answerNumber +
         ", answerContent=" + answerContent +
         ", answerChoice=" + answerChoice +
         ", answerTrue=" + answerTrue +

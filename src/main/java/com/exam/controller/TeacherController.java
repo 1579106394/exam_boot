@@ -5,17 +5,26 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exam.constant.ResultEnum;
 import com.exam.pojo.Page;
 import com.exam.pojo.PwdDO;
+import com.exam.pojo.RoleDO;
 import com.exam.pojo.TeacherDO;
+import com.exam.pojo.TeacherRoleDO;
 import com.exam.service.PwdService;
+import com.exam.service.RoleService;
+import com.exam.service.TeacherRoleService;
 import com.exam.service.TeacherService;
 import com.exam.utils.IdWorker;
 import com.exam.utils.MD5Utils;
 import com.exam.utils.Result;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.session.mgt.WebSessionKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +32,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -44,6 +57,10 @@ public class TeacherController {
     private IdWorker idWorker;
     @Autowired
     private PwdService pwdService;
+    @Autowired
+    private TeacherRoleService teacherRoleService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 教师登录
@@ -197,6 +214,36 @@ public class TeacherController {
             return Result.ok(page);
         } catch (Exception e) {
             return Result.build(ResultEnum.ERROR.getCode(), "查询失败！");
+        }
+    }
+
+    /**
+     * 根据token获取用户信息
+     */
+    @RequestMapping(value = "/info/{token}", method = RequestMethod.GET)
+    public Result info(@PathVariable String token, HttpServletRequest request, HttpServletResponse response) {
+        WebSessionKey key = new WebSessionKey(token, request, response);
+        try {
+            Session session = SecurityUtils.getSecurityManager().getSession(key);
+            SimplePrincipalCollection principalCollection = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+            TeacherDO teacherDO = (TeacherDO) principalCollection.getPrimaryPrincipal();
+            // 查询教师的角色信息，封装到教师中
+            // 查询角色， 封装成集合
+            QueryWrapper<TeacherRoleDO> wrapper = new QueryWrapper<TeacherRoleDO>()
+                    .eq("tr_teacher", teacherDO.getTeacherId());
+            List<TeacherRoleDO> list = teacherRoleService.list(wrapper);
+            // Lambda表达式取出集合中指定元素封装成另一个集合
+            List<String> roleIds = list.stream().map(TeacherRoleDO::getTrRole).collect(Collectors.toList());
+            // 使用roleIds查询所有的角色，将角色名封装成集合
+            List<String> roleList = Lists.newArrayList();
+            if(!roleIds.isEmpty()) {
+                roleList = roleService.listByIds(roleIds).stream().map(RoleDO::getRoleName).collect(Collectors.toList());
+            }
+            teacherDO.setRoleList(roleList);
+            return Result.ok(teacherDO);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return Result.build(ResultEnum.ERROR.getCode(), "您未登录，请登录");
         }
     }
 }
