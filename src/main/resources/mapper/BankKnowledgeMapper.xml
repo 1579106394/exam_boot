@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.BankKnowledgeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.BankKnowledgeDO">
+        <id column="know_id" property="knowId"/>
+        <result column="know_name" property="knowName"/>
+        <result column="know_bank" property="knowBank"/>
+        <result column="know_version" property="knowVersion"/>
+        <result column="know_delete" property="knowDelete"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        know_id, know_name, know_bank, know_version, know_delete
+    </sql>
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from ex_bank_knowledge
+        <where>
+            know_delete = 1
+            and know_bank = #{params.bankId}
+            <if test="params.knowName!=null and params.knowName!=''">
+                and know_name like '%${params.knowName}%'
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(know_id)
+        from ex_bank_knowledge
+        <where>
+            know_delete = 1
+            and know_bank = #{params.bankId}
+            <if test="params.knowName!=null and params.knowName!=''">
+                and know_name like '%${params.knowName}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>

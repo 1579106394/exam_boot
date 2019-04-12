@@ -26,7 +26,7 @@ public class GeneratorTest {
                 // 生成路径，生成到java路径位置
                 .setOutputDir("D:\\MyProject\\exam_boot\\src\\main\\java")
                 // 多次生成是否文件覆盖
-                .setFileOverride(false)
+                .setFileOverride(true)
                 // 设置主键策略
                 .setIdType(IdType.AUTO)
                 // 设置生成的service接口的名字的首字母是否为I，默认有

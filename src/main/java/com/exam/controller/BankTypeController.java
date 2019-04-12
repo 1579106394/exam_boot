@@ -37,12 +37,12 @@ public class BankTypeController {
     private TypeService typeService;
 
     /**
-     * 根据题库id查询题型
+     * 根据知识点id查询题型
      */
-    @RequestMapping(value = "/list/{bankId}", method = RequestMethod.GET)
-    public Result list(@PathVariable String bankId) {
+    @RequestMapping(value = "/list/{knowId}", method = RequestMethod.GET)
+    public Result list(@PathVariable String knowId) {
         try {
-            List<BankTypeDO> list = bankTypeService.getListByBank(bankId);
+            List<BankTypeDO> list = bankTypeService.getListByKnow(knowId);
             return Result.ok(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,13 +56,13 @@ public class BankTypeController {
     @RequestMapping(value = "/addType", method = RequestMethod.POST)
     public Result addType(@RequestBody BankTypeDO bankTypeDO) {
         try {
-            // 查询该题库是否已有这个题型
+            // 查询该题库该知识点是否已有这个题型
             QueryWrapper<BankTypeDO> wrapper = new QueryWrapper<BankTypeDO>()
-                    .eq("bank_id", bankTypeDO.getBankId())
+                    .eq("bank_know", bankTypeDO.getBankKnow())
                     .eq("bank_type", bankTypeDO.getBankType());
             BankTypeDO bt = bankTypeService.getOne(wrapper);
             if (bt != null) {
-                return Result.build(ResultEnum.ERROR.getCode(), "题库中已存在该题型，请勿重复添加！");
+                return Result.build(ResultEnum.ERROR.getCode(), "知识点中已存在该题型，请勿重复添加！");
             }
             bankTypeDO.setId(idWorker.nextId() + "");
             bankTypeService.save(bankTypeDO);

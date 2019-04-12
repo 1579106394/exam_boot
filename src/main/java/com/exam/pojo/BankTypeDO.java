@@ -38,6 +38,11 @@ public class BankTypeDO implements Serializable {
     private String bankType;
 
     /**
+     * 知识点id
+     */
+    private String bankKnow;
+
+    /**
      * 乐观锁
      */
     @Version

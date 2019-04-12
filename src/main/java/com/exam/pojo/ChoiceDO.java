@@ -59,6 +59,11 @@ public class ChoiceDO implements Serializable {
     private String choiceBank;
 
     /**
+     * 所属知识点
+     */
+    private String choiceKnow;
+
+    /**
      * 解析
      */
     private String choiceResolve;

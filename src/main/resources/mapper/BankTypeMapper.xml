@@ -7,6 +7,7 @@
         <id column="id" property="id"/>
         <result column="bank_id" property="bankId"/>
         <result column="bank_type" property="bankType"/>
+        <result column="bank_know" property="bankKnow"/>
         <result column="bank_version" property="bankVersion"/>
         <result column="bank_delete" property="bankDelete"/>
         <association property="type" javaType="com.exam.pojo.TypeDO">
@@ -17,16 +18,16 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, bank_id, bank_type, bank_version, bank_delete
+        id, bank_id, bank_type, bank_know, bank_version, bank_delete
     </sql>
 
-    <select id="getListByBank" resultMap="BaseResultMap">
+    <select id="getListByKnow" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         ,type_id, type_name
         from ex_bank_type
         inner join ex_type on bank_type = type_id
-        where bank_id = #{value} and bank_delete = 1
+        where bank_know = #{value} and bank_delete = 1
     </select>
 
 </mapper>

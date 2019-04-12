@@ -163,13 +163,13 @@ public class ChoiceController {
         if (StringUtils.isBlank(choice.getChoiceId())) {
             // 补全属性
             choice.setChoiceId(idWorker.nextId() + "");
-            choiceService.save(choice);
             // 获取id，给选项每一项的题目id赋值
             String choiceId = choice.getChoiceId();
             answerList.forEach(e -> {
                 e.setAnswerChoice(choiceId);
                 e.setAnswerId(idWorker.nextId() + "");
             });
+            choiceService.save(choice);
             choiceAnswerService.saveBatch(answerList);
             return Result.ok("添加成功！");
         } else {
@@ -207,7 +207,6 @@ public class ChoiceController {
 
             // 补全属性
             choice.setChoiceId(idWorker.nextId() + "");
-            choiceService.save(choice);
 
             // 获取id，给选项每一项的题目id赋值
             String choiceId = choice.getChoiceId();
@@ -216,6 +215,7 @@ public class ChoiceController {
                 e.setAnswerId(idWorker.nextId() + "");
             });
 
+            choiceService.save(choice);
             choiceAnswerService.saveBatch(answerList);
             return Result.ok("添加成功！");
         } else {

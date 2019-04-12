@@ -24,12 +24,12 @@ public class BankTypeServiceImpl extends ServiceImpl<BankTypeMapper, BankTypeDO>
     private BankTypeMapper bankTypeMapper;
 
     /**
-     * 根据题库id查询题型
+     * 根据知识点id查询题型
      * @param bankId
      * @return
      */
     @Override
-    public List<BankTypeDO> getListByBank(String bankId) {
-        return bankTypeMapper.getListByBank(bankId);
+    public List<BankTypeDO> getListByKnow(String bankId) {
+        return bankTypeMapper.getListByKnow(bankId);
     }
 }

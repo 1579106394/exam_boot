@@ -16,9 +16,9 @@ import java.util.List;
 public interface BankTypeService extends IService<BankTypeDO> {
 
     /**
-     * 根据题库id查询题型
+     * 根据知识点id查询题型
      * @param bankId
      * @return
      */
-    List<BankTypeDO> getListByBank(String bankId);
+    List<BankTypeDO> getListByKnow(String bankId);
 }

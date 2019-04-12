@@ -7,6 +7,7 @@ import com.exam.pojo.BankDO;
 import com.exam.pojo.Page;
 import com.exam.service.BankService;
 import com.exam.service.BankTypeService;
+import com.exam.service.DictService;
 import com.exam.service.TypeService;
 import com.exam.utils.IdWorker;
 import com.exam.utils.Result;
@@ -39,6 +40,8 @@ public class BankController {
     private IdWorker idWorker;
     @Autowired
     private TypeService typeService;
+    @Autowired
+    private DictService dictService;
 
     /**
      * 新增题库
@@ -93,6 +96,9 @@ public class BankController {
     @RequestMapping(value = "/get/{bankId}", method = RequestMethod.GET)
     public Result get(@PathVariable String bankId) {
         BankDO bankDO = bankService.getById(bankId);
+        // 查询对应的学院和科目
+        bankDO.setCollege(dictService.getById(bankDO.getBankCollege()));
+        bankDO.setSubject(dictService.getById(bankDO.getBankSubject()));
         return Result.ok(bankDO);
     }
 

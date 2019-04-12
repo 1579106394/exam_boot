@@ -16,9 +16,9 @@ import java.util.List;
 public interface BankTypeMapper extends BaseMapper<BankTypeDO> {
 
     /**
-     * 根据题库id查询
+     * 根据知识点id查询
      * @param bankId
      * @return
      */
-    List<BankTypeDO> getListByBank(String bankId);
+    List<BankTypeDO> getListByKnow(String bankId);
 }
