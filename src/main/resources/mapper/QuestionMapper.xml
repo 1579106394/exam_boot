@@ -9,16 +9,17 @@
         <result column="question_img" property="questionImg" />
         <result column="question_type" property="questionType" />
         <result column="question_score" property="questionScore" />
-        <result column="question_difficultt" property="questionDifficultt" />
+        <result column="question_difficulty" property="questionDifficulty" />
         <result column="question_bank" property="questionBank" />
         <result column="question_style" property="questionStyle" />
+        <result column="question_know" property="questionKnow" />
         <result column="question_version" property="questionVersion" />
         <result column="question_delete" property="questionDelete" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        question_id, question_title, question_img, question_type, question_score, question_difficultt, question_bank, question_style, question_version, question_delete
+        question_id, question_title, question_img, question_type, question_score, question_difficulty, question_bank, question_style, question_know, question_version, question_delete
     </sql>
 
 </mapper>

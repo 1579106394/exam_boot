@@ -1,7 +1,8 @@
 package com.exam.service;
 
-import com.exam.pojo.CompletionDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.exam.pojo.CompletionDO;
+import com.exam.pojo.Page;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CompletionService extends IService<CompletionDO> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    Page<CompletionDO> getByPage(Page<CompletionDO> page);
 }

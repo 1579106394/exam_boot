@@ -4,7 +4,7 @@ package com.exam.constant;
  * 字符集常量
  * @author 杨德石
  */
-public class CharConstant {
+public abstract class CharConstant {
 
     /**
      * 字符集

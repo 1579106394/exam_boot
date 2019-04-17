@@ -4,20 +4,64 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.exam.pojo.TrueFalseDO">
-        <id column="tf_id" property="tfId" />
-        <result column="tf_title" property="tfTitle" />
-        <result column="tf_score" property="tfScore" />
-        <result column="tf_difficulty" property="tfDifficulty" />
-        <result column="tf_bank" property="tfBank" />
-        <result column="tf_resolve" property="tfResolve" />
-        <result column="tf_true" property="tfTrue" />
-        <result column="tf_version" property="tfVersion" />
-        <result column="tf_delete" property="tfDelete" />
+        <id column="tf_id" property="tfId"/>
+        <result column="tf_title" property="tfTitle"/>
+        <result column="tf_score" property="tfScore"/>
+        <result column="tf_difficulty" property="tfDifficulty"/>
+        <result column="tf_bank" property="tfBank"/>
+        <result column="tf_resolve" property="tfResolve"/>
+        <result column="tf_true" property="tfTrue"/>
+        <result column="tf_know" property="tfKnow"/>
+        <result column="tf_version" property="tfVersion"/>
+        <result column="tf_delete" property="tfDelete"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        tf_id, tf_title, tf_score, tf_difficulty, tf_bank, tf_resolve, tf_true, tf_version, tf_delete
+        tf_id, tf_title, tf_score, tf_difficulty, tf_bank, tf_resolve, tf_true, tf_know, tf_version, tf_delete
     </sql>
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from ex_true_false
+        <where>
+            tf_delete = 1
+            <if test="params.tfTitle!=null and params.tfTitle!=''">
+                and tf_title like '%${params.tfTitle}%'
+            </if>
+            <if test="params.bankId!=null and params.bankId!=''">
+                and tf_bank = #{params.bankId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and tf_know = #{params.knowId}
+            </if>
+            <if test="params.tfDifficulty!=null and params.tfDifficulty!=''">
+                and tf_difficulty = #{params.tfDifficulty}
+            </if>
+        </where>
+        order by tf_difficulty asc
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCountByPage" resultType="java.lang.Integer">
+        select
+        count(tf_id)
+        from ex_true_false
+        <where>
+            tf_delete = 1
+            <if test="params.tfTitle!=null and params.tfTitle!=''">
+                and tf_title like '%${params.tfTitle}%'
+            </if>
+            <if test="params.bankId!=null and params.bankId!=''">
+                and tf_bank = #{params.bankId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and tf_know = #{params.knowId}
+            </if>
+            <if test="params.tfDifficulty!=null and params.tfDifficulty!=''">
+                and tf_difficulty = #{params.tfDifficulty}
+            </if>
+        </where>
+    </select>
 
 </mapper>

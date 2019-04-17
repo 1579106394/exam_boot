@@ -2,9 +2,12 @@ package com.exam.service.impl;
 
 import com.exam.pojo.ChoiceAnswerDO;
 import com.exam.mapper.ChoiceAnswerMapper;
+import com.exam.pojo.ChoiceDO;
 import com.exam.service.ChoiceAnswerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -17,4 +20,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChoiceAnswerServiceImpl extends ServiceImpl<ChoiceAnswerMapper, ChoiceAnswerDO> implements ChoiceAnswerService {
 
+    @Autowired
+    private ChoiceAnswerMapper choiceAnswerMapper;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteOldAnswer(ChoiceDO choice) {
+        choiceAnswerMapper.deleteOldAnswer(choice);
+    }
 }

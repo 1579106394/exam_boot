@@ -45,7 +45,7 @@
             <if test="params.typeId!=null and params.typeId!=''">
                 and choice_type = #{params.typeId}
             </if>
-            <if test="params.bankId!=null and params.bankId!=''">
+            <if test="params.knowId!=null and params.knowId!=''">
                 and choice_know = #{params.knowId}
             </if>
             <if test="params.choiceDifficulty!=null and params.choiceDifficulty!=''">
@@ -59,12 +59,17 @@
         limit #{index}, #{currentCount}
         ) ex_choice
         LEFT JOIN ex_choice_answer ON choice_id = answer_choice
+        where answer_delete = 1
     </select>
 
     <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
-        select
+        SELECT
         count(choice_id)
-        from ex_choice
+        FROM (
+        SELECT
+        choice_id
+        FROM
+        ex_choice
         <where>
             choice_delete = 1
             <if test="params.bankId!=null and params.bankId!=''">
@@ -73,7 +78,7 @@
             <if test="params.typeId!=null and params.typeId!=''">
                 and choice_type = #{params.typeId}
             </if>
-            <if test="params.bankId!=null and params.bankId!=''">
+            <if test="params.knowId!=null and params.knowId!=''">
                 and choice_know = #{params.knowId}
             </if>
             <if test="params.choiceDifficulty!=null and params.choiceDifficulty!=''">
@@ -83,6 +88,9 @@
                 and choice_title like '%${params.choiceTitle}%'
             </if>
         </where>
+        ) ex_choice
+        LEFT JOIN ex_choice_answer ON choice_id = answer_choice
+        where answer_delete = 1
     </select>
 
 </mapper>

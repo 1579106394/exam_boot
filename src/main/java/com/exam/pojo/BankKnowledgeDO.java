@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * @since 2019-04-11
  */
 @TableName("ex_bank_knowledge")
+@Data
 public class BankKnowledgeDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,47 +47,6 @@ public class BankKnowledgeDO implements Serializable {
      */
     @TableLogic
     private Integer knowDelete;
-
-
-    public String getKnowId() {
-        return knowId;
-    }
-
-    public void setKnowId(String knowId) {
-        this.knowId = knowId;
-    }
-
-    public String getKnowName() {
-        return knowName;
-    }
-
-    public void setKnowName(String knowName) {
-        this.knowName = knowName;
-    }
-
-    public String getKnowBank() {
-        return knowBank;
-    }
-
-    public void setKnowBank(String knowBank) {
-        this.knowBank = knowBank;
-    }
-
-    public Integer getKnowVersion() {
-        return knowVersion;
-    }
-
-    public void setKnowVersion(Integer knowVersion) {
-        this.knowVersion = knowVersion;
-    }
-
-    public Integer getKnowDelete() {
-        return knowDelete;
-    }
-
-    public void setKnowDelete(Integer knowDelete) {
-        this.knowDelete = knowDelete;
-    }
 
     @Override
     public String toString() {

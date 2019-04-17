@@ -158,7 +158,6 @@ public class TeacherController {
                 return Result.build(ResultEnum.ERROR.getCode(), "用户名已存在！");
             }
 
-            teacherDO.setTeacherVersion(teacher.getTeacherVersion());
             String plaintext = teacherDO.getTeacherPassword();
             String ciphertext = MD5Utils.toMD5(plaintext);
             teacherDO.setTeacherPassword(ciphertext);

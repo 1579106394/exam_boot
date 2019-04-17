@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
  * 其他常量
  * @author 杨德石
  */
-public class OtherConstant {
+public abstract class OtherConstant {
 
     /**
      * 默认日期格式化

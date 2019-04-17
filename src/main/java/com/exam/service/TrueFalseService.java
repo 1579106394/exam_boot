@@ -1,5 +1,6 @@
 package com.exam.service;
 
+import com.exam.pojo.Page;
 import com.exam.pojo.TrueFalseDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,8 +10,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author 杨德石
- * @since 2019-04-09
+ * @since 2019-04-12
  */
 public interface TrueFalseService extends IService<TrueFalseDO> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    Page<TrueFalseDO> getByPage(Page<TrueFalseDO> page);
 }

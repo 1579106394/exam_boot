@@ -63,8 +63,6 @@ public class TypeController {
                     || typeId.equals(TypeEnum.PROGRAMMING.getCode().toString())) {
                 return Result.build(ResultEnum.ERROR.getCode(), "该题型为默认题型，禁止修改！");
             }
-            TypeDO type = typeService.getById(typeId);
-            typeDO.setTypeVersion(type.getTypeVersion());
             typeService.updateById(typeDO);
             return Result.ok("修改成功！");
         } catch (Exception e) {

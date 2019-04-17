@@ -80,8 +80,6 @@ public class BankKnowledgeController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public Result update(@RequestBody BankKnowledgeDO knowledgeDO) {
         try {
-            BankKnowledgeDO knowledge = knowledgeService.getById(knowledgeDO.getKnowId());
-            knowledgeDO.setKnowVersion(knowledge.getKnowVersion());
             knowledgeService.updateById(knowledgeDO);
             return Result.ok("修改成功！");
         }catch (Exception e) {

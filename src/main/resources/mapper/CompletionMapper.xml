@@ -4,18 +4,83 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.exam.pojo.CompletionDO">
-        <id column="comp_id" property="compId" />
-        <result column="comp_content" property="compContent" />
-        <result column="comp_score" property="compScore" />
-        <result column="comp_difficulty" property="compDifficulty" />
-        <result column="comp_bank" property="compBank" />
-        <result column="comp_version" property="compVersion" />
-        <result column="comp_delete" property="compDelete" />
+        <id column="comp_id" property="compId"/>
+        <result column="comp_content" property="compContent"/>
+        <result column="comp_score" property="compScore"/>
+        <result column="comp_difficulty" property="compDifficulty"/>
+        <result column="comp_bank" property="compBank"/>
+        <result column="comp_know" property="compKnow"/>
+        <result column="comp_resolve" property="compResolve"/>
+        <result column="comp_version" property="compVersion"/>
+        <result column="comp_delete" property="compDelete"/>
+        <collection property="answerList" ofType="com.exam.pojo.CompletionAnswerDO">
+            <id column="answer_id" property="answerId"/>
+            <result column="answer_number" property="answerNumber"/>
+            <result column="answer_content" property="answerContent"/>
+        </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        comp_id, comp_content, comp_score, comp_difficulty, comp_bank, comp_version, comp_delete
+        comp_id, comp_content, comp_score, comp_difficulty, comp_resolve, comp_bank, comp_version, comp_delete
     </sql>
+
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number ,answer_content FROM (
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        ex_completion
+        <where>
+            comp_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and comp_bank = #{params.bankId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and comp_know = #{params.knowId}
+            </if>
+            <if test="params.compDifficulty!=null and params.compDifficulty!=''">
+                and comp_difficulty = #{params.compDifficulty}
+            </if>
+            <if test="params.compContent!=null and params.compContent!=''">
+                and comp_content like '%${params.compContent}%'
+            </if>
+        </where>
+        order by comp_difficulty asc
+        limit #{index}, #{currentCount}
+        ) ex_comp
+        LEFT JOIN ex_completion_answer ON comp_id = answer_comp
+        where answer_delete = 1
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        SELECT
+        count(comp_id)
+        FROM (
+        SELECT
+        comp_id
+        FROM
+        ex_completion
+        <where>
+            comp_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and comp_bank = #{params.bankId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and comp_know = #{params.knowId}
+            </if>
+            <if test="params.compDifficulty!=null and params.compDifficulty!=''">
+                and comp_difficulty = #{params.compDifficulty}
+            </if>
+            <if test="params.compContent!=null and params.compContent!=''">
+                and comp_content like '%${params.compContent}%'
+            </if>
+        </where>
+        ) ex_comp
+        LEFT JOIN ex_completion_answer ON comp_id = answer_comp
+        where answer_delete = 1
+    </select>
 
 </mapper>

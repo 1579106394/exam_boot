@@ -67,8 +67,6 @@ public class BankController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public Result update(@RequestBody BankDO bankDO) {
         try {
-            BankDO bank = bankService.getById(bankDO.getBankId());
-            bankDO.setBankVersion(bank.getBankVersion());
             bankService.updateById(bankDO);
             return Result.ok("更新成功！");
         } catch (Exception e) {

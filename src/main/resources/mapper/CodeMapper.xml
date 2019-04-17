@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.CodeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.CodeDO">
+        <id column="code_id" property="codeId" />
+        <result column="code_title" property="codeTitle" />
+        <result column="code_imgs" property="codeImgs" />
+        <result column="code_type" property="codeType" />
+        <result column="code_score" property="codeScore" />
+        <result column="code_difficulty" property="codeDifficulty" />
+        <result column="code_bank" property="codeBank" />
+        <result column="code_know" property="codeKnow" />
+        <result column="code_compile" property="codeCompile" />
+        <result column="code_version" property="codeVersion" />
+        <result column="code_delete" property="codeDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        code_id, code_title, code_imgs, code_type, code_score, code_difficulty, code_bank, code_know, code_compile, code_version, code_delete
+    </sql>
+
+</mapper>

@@ -98,7 +98,6 @@ public class StudentController {
                 return Result.build(ResultEnum.ERROR.getCode(), "身份证号已存在！");
             }
 
-            studentDO.setStuVersion(student.getStuVersion());
             String plaintext = studentDO.getStuPassword();
             String ciphertext = MD5Utils.toMD5(plaintext);
             studentDO.setStuPassword(ciphertext);

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author 杨德石
- * @since 2019-03-28
+ * @since 2019-04-12
  */
 public interface PaperConfigMapper extends BaseMapper<PaperConfigDO> {
 

@@ -67,10 +67,6 @@ public class Page<T> implements Serializable {
      */
     private List<String> columns = Lists.newArrayList();
 
-    public Page() {
-
-    }
-
     public void filterParams() {
         // 处理排序参数
         if(StringUtils.isNotBlank(sortName)) {

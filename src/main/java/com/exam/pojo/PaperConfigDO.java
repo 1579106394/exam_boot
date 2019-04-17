@@ -2,10 +2,7 @@ package com.exam.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
-import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,9 +13,8 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author 杨德石
- * @since 2019-03-28
+ * @since 2019-04-12
  */
-@Data
 @TableName("ex_paper_config")
 public class PaperConfigDO implements Serializable {
 
@@ -48,16 +44,84 @@ public class PaperConfigDO implements Serializable {
     private String configType;
 
     /**
+     * 知识点
+     */
+    private String configKnow;
+
+    /**
      * 乐观锁
      */
-    @Version
     private Integer configVersion;
 
     /**
      * 0删除1正常
      */
-    @TableLogic
     private Integer configDelete;
+
+
+    public String getConfigId() {
+        return configId;
+    }
+
+    public void setConfigId(String configId) {
+        this.configId = configId;
+    }
+
+    public String getConfigPaper() {
+        return configPaper;
+    }
+
+    public void setConfigPaper(String configPaper) {
+        this.configPaper = configPaper;
+    }
+
+    public Integer getConfigQuestionNum() {
+        return configQuestionNum;
+    }
+
+    public void setConfigQuestionNum(Integer configQuestionNum) {
+        this.configQuestionNum = configQuestionNum;
+    }
+
+    public BigDecimal getConfigScore() {
+        return configScore;
+    }
+
+    public void setConfigScore(BigDecimal configScore) {
+        this.configScore = configScore;
+    }
+
+    public String getConfigType() {
+        return configType;
+    }
+
+    public void setConfigType(String configType) {
+        this.configType = configType;
+    }
+
+    public String getConfigKnow() {
+        return configKnow;
+    }
+
+    public void setConfigKnow(String configKnow) {
+        this.configKnow = configKnow;
+    }
+
+    public Integer getConfigVersion() {
+        return configVersion;
+    }
+
+    public void setConfigVersion(Integer configVersion) {
+        this.configVersion = configVersion;
+    }
+
+    public Integer getConfigDelete() {
+        return configDelete;
+    }
+
+    public void setConfigDelete(Integer configDelete) {
+        this.configDelete = configDelete;
+    }
 
     @Override
     public String toString() {
@@ -67,6 +131,7 @@ public class PaperConfigDO implements Serializable {
         ", configQuestionNum=" + configQuestionNum +
         ", configScore=" + configScore +
         ", configType=" + configType +
+        ", configKnow=" + configKnow +
         ", configVersion=" + configVersion +
         ", configDelete=" + configDelete +
         "}";

@@ -2,6 +2,7 @@ package com.exam.mapper;
 
 import com.exam.pojo.ChoiceAnswerDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.exam.pojo.ChoiceDO;
 
 /**
  * <p>
@@ -13,4 +14,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ChoiceAnswerMapper extends BaseMapper<ChoiceAnswerDO> {
 
+    /**
+     * 批量删除旧答案
+     * @param choice
+     */
+    void deleteOldAnswer(ChoiceDO choice);
 }

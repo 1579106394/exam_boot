@@ -13,6 +13,7 @@ import com.exam.utils.IdWorker;
 import com.exam.utils.Result;
 import com.exam.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -145,7 +146,8 @@ public class ChoiceController {
      * @param choice
      * @return
      */
-    private Result addOrUpdateManyChoice(ChoiceDO choice) {
+    @Transactional(rollbackFor = Exception.class)
+    protected Result addOrUpdateManyChoice(ChoiceDO choice) {
         // 添加选择题，然后获取选择题的选项进行添加
         List<ChoiceAnswerDO> answerList = choice.getChoiceAnswer();
         // 判断是否添加了选项
@@ -160,25 +162,7 @@ public class ChoiceController {
             return Result.build(ResultEnum.ERROR.getCode(), "多项选择题必须有正确答案！");
         }
 
-        if (StringUtils.isBlank(choice.getChoiceId())) {
-            // 补全属性
-            choice.setChoiceId(idWorker.nextId() + "");
-            // 获取id，给选项每一项的题目id赋值
-            String choiceId = choice.getChoiceId();
-            answerList.forEach(e -> {
-                e.setAnswerChoice(choiceId);
-                e.setAnswerId(idWorker.nextId() + "");
-            });
-            choiceService.save(choice);
-            choiceAnswerService.saveBatch(answerList);
-            return Result.ok("添加成功！");
-        } else {
-            ChoiceDO choiceDO = choiceService.getById(choice.getChoiceId());
-            choice.setChoiceVersion(choiceDO.getChoiceVersion());
-            choiceService.updateById(choice);
-            choiceAnswerService.updateBatchById(answerList);
-            return Result.ok("修改成功！");
-        }
+        return updateChoice(choice, answerList);
     }
 
     /**
@@ -187,7 +171,8 @@ public class ChoiceController {
      * @param choice
      * @return
      */
-    private Result addOrUpdateOneChoice(ChoiceDO choice) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    protected Result addOrUpdateOneChoice(ChoiceDO choice) throws Exception {
         // 添加选择题，然后获取选择题的选项进行添加
         List<ChoiceAnswerDO> answerList = choice.getChoiceAnswer();
         // 判断是否添加了选项
@@ -203,29 +188,55 @@ public class ChoiceController {
         }
 
         // 判断是修改还是添加
-        if (StringUtils.isBlank(choice.getChoiceId())) {
+        return updateChoice(choice, answerList);
+    }
 
+
+    private Result updateChoice(ChoiceDO choice, List<ChoiceAnswerDO> answerList) {
+        if (StringUtils.isBlank(choice.getChoiceId())) {
             // 补全属性
             choice.setChoiceId(idWorker.nextId() + "");
-
             // 获取id，给选项每一项的题目id赋值
             String choiceId = choice.getChoiceId();
             answerList.forEach(e -> {
                 e.setAnswerChoice(choiceId);
                 e.setAnswerId(idWorker.nextId() + "");
             });
-
             choiceService.save(choice);
             choiceAnswerService.saveBatch(answerList);
             return Result.ok("添加成功！");
         } else {
-            ChoiceDO choiceDO = choiceService.getById(choice.getChoiceId());
-            choice.setChoiceVersion(choiceDO.getChoiceVersion());
+
+            // 删除旧选项
+            choiceAnswerService.deleteOldAnswer(choice);
+
+            // 更新
             choiceService.updateById(choice);
             choiceAnswerService.updateBatchById(answerList);
+
+            // 查询所有的数据库中的答案，将上面的集合中清除这些答案，然后插入
+            ChoiceDO choiceDO = choiceService.getById(choice.getChoiceId());
+            // 查询所有的答案
+            String choiceId = choiceDO.getChoiceId();
+            QueryWrapper<ChoiceAnswerDO> wrapper = new QueryWrapper<ChoiceAnswerDO>()
+                    .eq("answer_choice", choiceId);
+
+            List<ChoiceAnswerDO> answerDOList = choiceAnswerService.list(wrapper);
+
+            // 删除所有更新成功的答案，剩下的就是新增的，批量添加一下
+            answerList.removeAll(answerDOList);
+
+            answerList.forEach(e -> {
+                e.setAnswerId(idWorker.nextId() + "");
+                e.setAnswerChoice(choiceId);
+            });
+
+            choiceAnswerService.saveBatch(answerList);
+
             return Result.ok("修改成功！");
         }
     }
+
 
 }
 

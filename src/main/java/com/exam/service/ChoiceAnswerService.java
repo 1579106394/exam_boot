@@ -2,6 +2,7 @@ package com.exam.service;
 
 import com.exam.pojo.ChoiceAnswerDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.exam.pojo.ChoiceDO;
 
 /**
  * <p>
@@ -13,4 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ChoiceAnswerService extends IService<ChoiceAnswerDO> {
 
+    /**
+     * 删除旧答案
+     * @param choice
+     */
+    void deleteOldAnswer(ChoiceDO choice);
 }

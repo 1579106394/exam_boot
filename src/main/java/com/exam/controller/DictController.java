@@ -64,8 +64,6 @@ public class DictController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public Result update(@RequestBody DictDO dict) {
         try {
-            DictDO dictDO = dictService.getById(dict.getDictId());
-            dict.setDictVersion(dictDO.getDictVersion());
             dictService.updateById(dict);
             return Result.ok("更新成功！");
 

@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author 杨德石
- * @since 2019-04-09
+ * @since 2019-04-12
  */
 @TableName("ex_true_false")
 @Data
@@ -53,12 +53,17 @@ public class TrueFalseDO implements Serializable {
     /**
      * 解析
      */
-    private Integer tfResolve;
+    private String tfResolve;
 
     /**
      * 是否正确，1正确0错误
      */
     private Integer tfTrue;
+
+    /**
+     * 知识点id
+     */
+    private String tfKnow;
 
     /**
      * 乐观锁
@@ -82,6 +87,7 @@ public class TrueFalseDO implements Serializable {
         ", tfBank=" + tfBank +
         ", tfResolve=" + tfResolve +
         ", tfTrue=" + tfTrue +
+        ", tfKnow=" + tfKnow +
         ", tfVersion=" + tfVersion +
         ", tfDelete=" + tfDelete +
         "}";

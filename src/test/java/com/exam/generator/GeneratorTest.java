@@ -26,7 +26,7 @@ public class GeneratorTest {
                 // 生成路径，生成到java路径位置
                 .setOutputDir("D:\\MyProject\\exam_boot\\src\\main\\java")
                 // 多次生成是否文件覆盖
-                .setFileOverride(true)
+                .setFileOverride(false)
                 // 设置主键策略
                 .setIdType(IdType.AUTO)
                 // 设置生成的service接口的名字的首字母是否为I，默认有
@@ -51,7 +51,7 @@ public class GeneratorTest {
                 // 设置数据库表映射到实体时下划线转驼峰策略
                 .setNaming(NamingStrategy.underline_to_camel)
                 // 设置表名前缀
-                .setTablePrefix("ex_").setInclude("ex_true_false");
+                .setTablePrefix("ex_").setInclude("ex_code_answer");
         // 4.包名策略配置
         PackageConfig packageConfig = new PackageConfig();
         // 设置每一种代码生成的包名，傻子都能看懂，不写注释了

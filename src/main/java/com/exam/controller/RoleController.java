@@ -54,8 +54,6 @@ public class RoleController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public Result update(@RequestBody RoleDO roleDO) {
         try {
-            RoleDO role = roleService.getById(roleDO.getRoleId());
-            roleDO.setRoleVersion(role.getRoleVersion());
             roleService.updateById(roleDO);
             return Result.ok("修改成功！");
         } catch (Exception e) {

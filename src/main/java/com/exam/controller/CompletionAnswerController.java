@@ -7,15 +7,15 @@ import org.springframework.stereotype.Controller;
 
 /**
  * <p>
- * 试卷配置表 前端控制器
+ * 填空题答案表 前端控制器
  * </p>
  *
  * @author 杨德石
- * @since 2019-04-12
+ * @since 2019-04-16
  */
 @Controller
-@RequestMapping("/paperConfigDO")
-public class PaperConfigController {
+@RequestMapping("/completionAnswer")
+public class CompletionAnswerController {
 
 }
 
