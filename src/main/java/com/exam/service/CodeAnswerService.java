@@ -2,6 +2,7 @@ package com.exam.service;
 
 import com.exam.pojo.CodeAnswerDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.exam.pojo.CodeDO;
 
 /**
  * <p>
@@ -9,8 +10,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author 杨德石
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 public interface CodeAnswerService extends IService<CodeAnswerDO> {
 
+    /**
+     * 删除旧答案
+     * @param codeDO
+     */
+    void deleteOldAnswer(CodeDO codeDO);
 }

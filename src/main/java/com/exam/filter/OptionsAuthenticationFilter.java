@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author: 杨德石
  * @date: 2019/3/31 0031 下午 7:39
  */
-public class OPTIONSAuthenticationFilter extends PassThruAuthenticationFilter {
+public class OptionsAuthenticationFilter extends PassThruAuthenticationFilter {
 
     @Override
     public boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {

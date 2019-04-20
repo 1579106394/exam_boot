@@ -2,8 +2,10 @@ package com.exam.utils;
 
 
 import com.exam.constant.CharConstant;
+import com.exam.constant.NumberConstant;
+import com.exam.constant.PatternConstant;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +15,11 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +27,9 @@ import java.util.regex.Pattern;
  * 增强StringUtils
  * @author
  */
-public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
+
+    private StringUtils() {}
 
     /**
      * 获得用户远程地址
@@ -92,7 +100,7 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
             String s = new DecimalFormat("#.00").format(money.abs());
             // 将字符串中的"."去掉
             s = s.replaceAll("\\.", "");
-            char d[] = {'零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'};
+            char[] d = {'零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'};
             String unit = "仟佰拾兆仟佰拾亿仟佰拾万仟佰拾元角分";
             int c = unit.length();
             StringBuffer sb = new StringBuffer(unit);
@@ -120,15 +128,15 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String getDataSize(long size) {
         DecimalFormat formater = new DecimalFormat("####.00");
-        if (size < 1024) {
+        if (size < NumberConstant.ONE_M) {
             return size + "bytes";
-        } else if (size < 1024 * 1024) {
+        } else if (size < NumberConstant.ONE_M * NumberConstant.ONE_M) {
             float kbsize = size / 1024f;
             return formater.format(kbsize) + "KB";
-        } else if (size < 1024 * 1024 * 1024) {
+        } else if (size < NumberConstant.ONE_M * NumberConstant.ONE_M * NumberConstant.ONE_M) {
             float mbsize = size / 1024f / 1024f;
             return formater.format(mbsize) + "MB";
-        } else if (size < 1024 * 1024 * 1024 * 1024) {
+        } else if (size < NumberConstant.ONE_M * NumberConstant.ONE_M * NumberConstant.ONE_M * NumberConstant.ONE_M) {
             float gbsize = size / 1024f / 1024f / 1024f;
             return formater.format(gbsize) + "GB";
         } else {
@@ -221,7 +229,7 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static String hideBankNumber(String bankNumber) {
         if (org.springframework.util.StringUtils.isEmpty(bankNumber)) {
             return "";
-        } else if (bankNumber.length() < 8) {
+        } else if (bankNumber.length() < NumberConstant.EIGHT) {
             return bankNumber;
         } else {
             return bankNumber.substring(0, 4) + "****" + bankNumber.substring(bankNumber.length() - 4);
@@ -254,13 +262,16 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
             return false;
         }
         // 校验微信号正则
-        String judge = "^[a-zA-Z][-_a-zA-Z0-9]{4,19}+$";
-        Pattern pat = Pattern.compile(judge);
+        Pattern pat = PatternConstant.WE_CHAT_PATTERN;
         Matcher mat = pat.matcher(weixinCode);
         return mat.matches();
     }
 
-    //驼峰转下划线
+    /**
+     * 驼峰转下划线
+     * @param param
+     * @return
+     */
     public static String camelToUnderline(String param) {
         if (param == null || "".equals(param.trim())) {
             return "";
@@ -311,7 +322,7 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param contains 被包含字串集合
      * @return
      */
-    public static boolean StringContains(String str, Set<String> contains) {
+    public static boolean stringContains(String str, Set<String> contains) {
         for (String item : contains) {
             if (str.contains(item)) {
                 return true;

@@ -11,8 +11,11 @@ import lombok.Getter;
 @Getter
 public enum QuestionEnum {
 
+    /**
+     * 题目正确错误状态值
+     */
     TRUE(1, "正确"),
-    FLASE(0, "错误")
+    FALSE(0, "错误")
     ;
     private Integer code;
     private String msg;

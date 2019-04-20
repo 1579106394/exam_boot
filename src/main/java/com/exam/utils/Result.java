@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 返回对象
+ * @author 杨德石
+ */
 public class Result implements Serializable {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

@@ -2,6 +2,7 @@ package com.exam.mapper;
 
 import com.exam.pojo.CodeAnswerDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.exam.pojo.CodeDO;
 
 /**
  * <p>
@@ -9,8 +10,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author 杨德石
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 public interface CodeAnswerMapper extends BaseMapper<CodeAnswerDO> {
 
+    /**
+     * 删除旧答案
+     * @param codeDO
+     */
+    void deleteOldAnswer(CodeDO codeDO);
 }

@@ -10,7 +10,9 @@ import lombok.Getter;
  */
 @Getter
 public enum DeleteEnum {
-
+    /**
+     * 逻辑删除状态值
+     */
     DELETE(0, "已删除"),
     NOT_DELETE(1, "未删除")
     ;

@@ -11,6 +11,9 @@ import lombok.Getter;
 @Getter
 public enum PaperEnum {
 
+    /**
+     * 试卷是否被启用状态值
+     */
     USE(1, "已启用"),
     NOT_USE(0, "未启用");
     private Integer code;

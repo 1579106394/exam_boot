@@ -2,7 +2,8 @@ package com.exam.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.stereotype.Controller;
 
 /**
  * <p>
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author 杨德石
- * @since 2019-03-28
+ * @since 2019-04-18
  */
-@RestController
-@RequestMapping("/questionAnswer")
+@Controller
+@RequestMapping("/questionAnswerDO")
 public class QuestionAnswerController {
 
 }

@@ -1,10 +1,16 @@
 package com.exam.pojo;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -15,11 +21,12 @@ import java.io.Serializable;
  * @since 2019-04-12
  */
 @TableName("ex_question")
+@Data
 public class QuestionDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "question_id", type = IdType.AUTO)
+    @TableId(value = "question_id", type = IdType.INPUT)
     private String questionId;
 
     /**
@@ -63,103 +70,28 @@ public class QuestionDO implements Serializable {
     private String questionKnow;
 
     /**
+     * 解析
+     */
+    private String questionResolve;
+
+    /**
      * 乐观锁
      */
+    @Version
     private Integer questionVersion;
 
     /**
      * 0删除1正常
      */
+    @TableLogic
     private Integer questionDelete;
 
-
-    public String getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(String questionId) {
-        this.questionId = questionId;
-    }
-
-    public String getQuestionTitle() {
-        return questionTitle;
-    }
-
-    public void setQuestionTitle(String questionTitle) {
-        this.questionTitle = questionTitle;
-    }
-
-    public String getQuestionImg() {
-        return questionImg;
-    }
-
-    public void setQuestionImg(String questionImg) {
-        this.questionImg = questionImg;
-    }
-
-    public String getQuestionType() {
-        return questionType;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public BigDecimal getQuestionScore() {
-        return questionScore;
-    }
-
-    public void setQuestionScore(BigDecimal questionScore) {
-        this.questionScore = questionScore;
-    }
-
-    public Integer getQuestionDifficulty() {
-        return questionDifficulty;
-    }
-
-    public void setQuestionDifficulty(Integer questionDifficulty) {
-        this.questionDifficulty = questionDifficulty;
-    }
-
-    public String getQuestionBank() {
-        return questionBank;
-    }
-
-    public void setQuestionBank(String questionBank) {
-        this.questionBank = questionBank;
-    }
-
-    public Integer getQuestionStyle() {
-        return questionStyle;
-    }
-
-    public void setQuestionStyle(Integer questionStyle) {
-        this.questionStyle = questionStyle;
-    }
-
-    public String getQuestionKnow() {
-        return questionKnow;
-    }
-
-    public void setQuestionKnow(String questionKnow) {
-        this.questionKnow = questionKnow;
-    }
-
-    public Integer getQuestionVersion() {
-        return questionVersion;
-    }
-
-    public void setQuestionVersion(Integer questionVersion) {
-        this.questionVersion = questionVersion;
-    }
-
-    public Integer getQuestionDelete() {
-        return questionDelete;
-    }
-
-    public void setQuestionDelete(Integer questionDelete) {
-        this.questionDelete = questionDelete;
-    }
+    /**
+     * 问题/答案列表(简答题可能多问)
+     * @return
+     */
+    @TableField(exist = false)
+    private List<QuestionAnswerDO> answerList;
 
     @Override
     public String toString() {

@@ -10,6 +10,9 @@ import lombok.Getter;
 @Getter
 public enum TypeEnum {
 
+    /**
+     * 题型状态值
+     */
     ONE_CHOICE(1, "单项选择题"),
     MANY_CHOICE(2, "多项选择题"),
     COMPLETION(4, "填空题"),

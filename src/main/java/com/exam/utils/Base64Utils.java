@@ -12,8 +12,11 @@ import java.io.OutputStream;
 
 /**
  * Base64工具类
+ * @author 杨德石
  */
-public abstract class Base64Utils {
+public class Base64Utils {
+
+    private Base64Utils() {}
 
     /**
      * 文件读取缓冲区大小

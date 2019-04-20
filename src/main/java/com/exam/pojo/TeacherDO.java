@@ -1,12 +1,11 @@
 package com.exam.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
-import com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -137,7 +136,7 @@ public class TeacherDO implements Serializable {
      * @return
      */
     @TableField(exist = false)
-    private List<String> roleList = Lists.newArrayList();
+    private List<String> roleList;
 
     @Override
     public String toString() {

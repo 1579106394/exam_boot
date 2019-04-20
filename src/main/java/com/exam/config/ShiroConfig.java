@@ -1,6 +1,7 @@
 package com.exam.config;
 
-import com.exam.filter.OPTIONSAuthenticationFilter;
+import com.exam.constant.OtherConstant;
+import com.exam.filter.OptionsAuthenticationFilter;
 import com.exam.manager.MySessionManager;
 import com.exam.realm.ExamRealm;
 import com.google.common.collect.Maps;
@@ -12,7 +13,6 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -27,8 +27,6 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
-    @Value("${REDIS_TIMEOUT}")
-    private long timeout;
 
     /**
      * 创建ShiroFilterFactoryBean
@@ -42,10 +40,10 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         // 配置自定义shiro过滤器
-        Map<String, Filter> OPTIONSFilter = Maps.newHashMap();
-        OPTIONSAuthenticationFilter authenticationFilter = new OPTIONSAuthenticationFilter();
-        OPTIONSFilter.put("authc", authenticationFilter);
-        shiroFilterFactoryBean.setFilters(OPTIONSFilter);
+        Map<String, Filter> optionsFilter = Maps.newHashMap();
+        OptionsAuthenticationFilter authenticationFilter = new OptionsAuthenticationFilter();
+        optionsFilter.put("authc", authenticationFilter);
+        shiroFilterFactoryBean.setFilters(optionsFilter);
 
         /**
          * 常用过滤器
@@ -86,7 +84,7 @@ public class ShiroConfig {
     @Bean("sessionManager")
     public SessionManager sessionManager() {
         MySessionManager mySessionManager = new MySessionManager();
-        mySessionManager.setGlobalSessionTimeout(timeout);
+        mySessionManager.setGlobalSessionTimeout(OtherConstant.REDIS_TIMEOUT);
         return mySessionManager;
     }
 

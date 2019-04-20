@@ -12,7 +12,9 @@ import java.util.List;
  * @author: 杨德石
  * @date: 2019/4/1 0001 下午 9:37
  */
-public abstract class TreeUtils {
+public class TreeUtils {
+
+    private TreeUtils() {}
 
     public static List<RoleDO> getRoleList(List<RoleDO> roleList) {
         List<RoleDO> list = Lists.newArrayList();

@@ -3,6 +3,10 @@ package com.exam.utils;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * 统一处理异常
+ * @author 杨德石
+ */
 public class ExceptionUtils {
 
     /**

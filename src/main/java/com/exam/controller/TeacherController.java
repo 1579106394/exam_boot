@@ -13,7 +13,7 @@ import com.exam.service.RoleService;
 import com.exam.service.TeacherRoleService;
 import com.exam.service.TeacherService;
 import com.exam.utils.IdWorker;
-import com.exam.utils.MD5Utils;
+import com.exam.utils.Md5Utils;
 import com.exam.utils.Result;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -70,7 +70,7 @@ public class TeacherController {
         // 使用shiro框架进行认证
         // 获取当前用户对象，状态为“未认证”
         Subject subject = SecurityUtils.getSubject();
-        AuthenticationToken token = new UsernamePasswordToken(teacherDO.getTeacherUsername(), MD5Utils.toMD5(teacherDO.getTeacherPassword()));
+        AuthenticationToken token = new UsernamePasswordToken(teacherDO.getTeacherUsername(), Md5Utils.toMD5(teacherDO.getTeacherPassword()));
         try {
             subject.login(token);
         } catch (Exception e) {
@@ -116,7 +116,7 @@ public class TeacherController {
             teacherDO.setTeacherId(teacherId);
             teacherDO.setTeacherUsername(teacherDO.getTeacherNumber());
             String plaintext = teacherDO.getTeacherPassword();
-            String ciphertext = MD5Utils.toMD5(plaintext);
+            String ciphertext = Md5Utils.toMD5(plaintext);
             teacherDO.setTeacherPassword(ciphertext);
             teacherService.save(teacherDO);
 
@@ -159,7 +159,7 @@ public class TeacherController {
             }
 
             String plaintext = teacherDO.getTeacherPassword();
-            String ciphertext = MD5Utils.toMD5(plaintext);
+            String ciphertext = Md5Utils.toMD5(plaintext);
             teacherDO.setTeacherPassword(ciphertext);
             teacherService.updateById(teacherDO);
 

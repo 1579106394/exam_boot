@@ -1,13 +1,12 @@
 package com.exam.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.exam.constant.OtherConstant;
 import com.exam.mapper.StudentMapper;
 import com.exam.pojo.Page;
 import com.exam.pojo.StudentDO;
-import com.exam.pojo.TypeDO;
 import com.exam.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +22,6 @@ import java.util.List;
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, StudentDO> implements StudentService {
 
-    @Value("${CURRENT_COUNT}")
-    private Integer CURRENT_COUNT;
     @Autowired
     private StudentMapper studentMapper;
 
@@ -39,7 +36,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, StudentDO> im
         page.filterParams();
         // 设置每页显示条数
         if (page.getCurrentCount() == null) {
-            page.setCurrentCount(CURRENT_COUNT);
+            page.setCurrentCount(OtherConstant.CURRENT_COUNT);
         }
         // 计算索引
         Integer index = (page.getCurrentPage() - 1) * page.getCurrentCount();

@@ -22,4 +22,9 @@ public class ExamException extends Exception {
         this.code = code;
     }
 
+    public ExamException(String message) {
+        super(message);
+        this.code = ResultEnum.ERROR.getCode();
+    }
+
 }

@@ -10,6 +10,9 @@ import lombok.Getter;
 @Getter
 public enum ResultEnum {
 
+    /**
+     * 返回值状态码
+     */
     SUCCESS(200, "操作成功"),
     ERROR(400, "操作失败"),;
 

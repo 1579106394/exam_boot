@@ -1,7 +1,8 @@
 package com.exam.service;
 
-import com.exam.pojo.QuestionDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.exam.pojo.Page;
+import com.exam.pojo.QuestionDO;
 
 /**
  * <p>
@@ -13,4 +14,23 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface QuestionService extends IService<QuestionDO> {
 
+    /**
+     * 修改题目
+     * @param question
+     * @return
+     */
+    void updateQuestion(QuestionDO question);
+
+    /**
+     * 添加题目
+     * @param question
+     */
+    void saveQuestion(QuestionDO question);
+
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    Page<QuestionDO> getByPage(Page<QuestionDO> page);
 }

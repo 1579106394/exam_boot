@@ -1,12 +1,12 @@
 package com.exam.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.exam.constant.OtherConstant;
 import com.exam.mapper.DictMapper;
 import com.exam.pojo.DictDO;
-import com.exam.service.DictService;
 import com.exam.pojo.Page;
+import com.exam.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,8 +27,6 @@ import java.util.List;
 @Service
 public class DictServiceImpl extends ServiceImpl<DictMapper, DictDO> implements DictService {
 
-    @Value("${CURRENT_COUNT}")
-    private Integer CURRENT_COUNT;
     @Autowired
     private DictMapper dictMapper;
 
@@ -44,7 +42,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, DictDO> implements 
         page.filterParams();
         // 设置每页显示条数
         if (page.getCurrentCount() == null) {
-            page.setCurrentCount(CURRENT_COUNT);
+            page.setCurrentCount(OtherConstant.CURRENT_COUNT);
         }
         // 计算索引
         Integer index = (page.getCurrentPage() - 1) * page.getCurrentCount();

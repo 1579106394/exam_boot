@@ -61,7 +61,12 @@ public class ExamRealm extends AuthorizingRealm {
         return info;
     }
 
-    // 认证
+    /**
+     * 认证
+     * @param token
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         // 根据用户名查询数据库中的密码

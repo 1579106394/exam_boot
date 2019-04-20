@@ -3,6 +3,7 @@ package com.exam.service;
 import com.exam.pojo.ChoiceDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.exam.pojo.Page;
+import com.exam.utils.Result;
 
 /**
  * <p>
@@ -20,4 +21,18 @@ public interface ChoiceService extends IService<ChoiceDO> {
      * @return
      */
     Page<ChoiceDO> getByPage(Page<ChoiceDO> page);
+
+    /**
+     * 添加或修改单选题
+     * @param choice
+     * @return
+     */
+    Result addOrUpdateOneChoice(ChoiceDO choice);
+
+    /**
+     * 添加或修改多选题
+     * @param choice
+     * @return
+     */
+    Result addOrUpdateManyChoice(ChoiceDO choice);
 }

@@ -4,13 +4,15 @@ package com.exam.constant;
  * 字符集常量
  * @author 杨德石
  */
-public abstract class CharConstant {
+public class CharConstant {
+
+    private CharConstant() {}
 
     /**
      * 字符集
      */
     public static final String CHAR_SPACE=" ";
-    public static final String CHAR_COLON=": ";
+    public static final String CHAR_COLON=":";
     public static final String CHAR_SPACE_FULL="　";
     public static final String CHAR_SPACE_U="  ";
     public static final String CHAR_SPACE_A="   ";
@@ -33,8 +35,11 @@ public abstract class CharConstant {
     public static final String CHAR_EIGHT="8";
     public static final String CHAR_NINE="9";
     public static final String CHAR_RUNG="-";
-    public static final String DEPARTMENT_FdHIEEARCHYIdS_CONNECTION = "+";
+    public static final String DEPARTMENT_FDHIEEARCHYIDS_CONNECTION = "+";
     public static final String CHAR_UNDERLINE = "_";
     public static final String CHAR_TREE = "|-";
+
+    public static final String UNKNOW = "unknow";
+    public static final String ERROR_IP = "0:0:0:0:0:0:0:1";
 
 }

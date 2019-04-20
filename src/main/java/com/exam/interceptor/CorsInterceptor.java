@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 跨域拦截器
+ * @author 杨德石
+ * @date
  */
-public class CORSInterceptor implements HandlerInterceptor {
+public class CorsInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         response.setHeader("Access-control-Allow-Origin", request.getHeader("Origin"));

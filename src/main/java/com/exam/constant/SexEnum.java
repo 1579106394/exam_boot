@@ -10,6 +10,10 @@ import lombok.Getter;
  */
 @Getter
 public enum SexEnum {
+
+    /**
+     * 性别状态码
+     */
     MAN(1, "男"),
     WOMAN(2, "女")
     ;

@@ -58,9 +58,6 @@
     <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
         SELECT
         count(comp_id)
-        FROM (
-        SELECT
-        comp_id
         FROM
         ex_completion
         <where>
@@ -78,9 +75,6 @@
                 and comp_content like '%${params.compContent}%'
             </if>
         </where>
-        ) ex_comp
-        LEFT JOIN ex_completion_answer ON comp_id = answer_comp
-        where answer_delete = 1
     </select>
 
 </mapper>

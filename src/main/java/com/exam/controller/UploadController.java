@@ -1,9 +1,9 @@
 package com.exam.controller;
 
+import com.exam.constant.OtherConstant;
 import com.exam.utils.Result;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,23 +24,18 @@ import java.util.UUID;
 @RestController
 public class UploadController {
 
-    @Value("${UPLOAD_URL}")
-    private String UPLOAD_URL;
-    @Value("${SERVER_URL}")
-    private String SERVER_URL;
-
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Result upload(MultipartFile file) {
         String name = UUID.randomUUID().toString().replaceAll("-", "");
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
         String fileName = name + "." + ext;
         try {
-            file.transferTo(new File(UPLOAD_URL + fileName));
+            file.transferTo(new File(OtherConstant.UPLOAD_URL + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String fileServerName = SERVER_URL + fileName;
+        String fileServerName = OtherConstant.SERVER_URL + fileName;
 
         Map<String, Object> data = Maps.newHashMap();
         data.put("fileUrl", fileServerName);

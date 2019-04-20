@@ -13,16 +13,13 @@ import com.exam.utils.IdWorker;
 import com.exam.utils.Result;
 import com.exam.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -52,10 +49,10 @@ public class ChoiceController {
             Result result = Result.ok("添加成功！");
             if (TypeEnum.ONE_CHOICE.getCode().equals(choice.getChoiceType())) {
                 // 是单选
-                result = addOrUpdateOneChoice(choice);
+                result = choiceService.addOrUpdateOneChoice(choice);
             } else if (TypeEnum.MANY_CHOICE.getCode().equals(choice.getChoiceType())) {
                 // 多选
-                result = addOrUpdateManyChoice(choice);
+                result = choiceService.addOrUpdateManyChoice(choice);
             }
             return result;
         } catch (Exception e) {
@@ -108,9 +105,7 @@ public class ChoiceController {
         try {
             ChoiceDO choice = choiceService.getById(choiceId);
 
-            QueryWrapper<ChoiceAnswerDO> wrapper = new QueryWrapper<ChoiceAnswerDO>()
-                    .eq("answer_choice", choiceId);
-            List<ChoiceAnswerDO> list = choiceAnswerService.list(wrapper);
+            List<ChoiceAnswerDO> list = choiceAnswerService.list(new QueryWrapper<ChoiceAnswerDO>().eq("answer_choice", choiceId));
             choice.setChoiceAnswer(list);
             return Result.ok(choice);
         } catch (Exception e) {
@@ -128,10 +123,10 @@ public class ChoiceController {
             Result result = Result.ok("修改成功！");
             if (TypeEnum.ONE_CHOICE.getCode().equals(choice.getChoiceType())) {
                 // 是单选
-                result = addOrUpdateOneChoice(choice);
+                result = choiceService.addOrUpdateOneChoice(choice);
             } else if (TypeEnum.MANY_CHOICE.getCode().equals(choice.getChoiceType())) {
                 // 多选
-                result = addOrUpdateManyChoice(choice);
+                result = choiceService.addOrUpdateManyChoice(choice);
             }
             return result;
         } catch (Exception e) {
@@ -139,104 +134,6 @@ public class ChoiceController {
             return Result.build(ResultEnum.ERROR.getCode(), "修改失败！");
         }
     }
-
-    /**
-     * 添加多选
-     *
-     * @param choice
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    protected Result addOrUpdateManyChoice(ChoiceDO choice) {
-        // 添加选择题，然后获取选择题的选项进行添加
-        List<ChoiceAnswerDO> answerList = choice.getChoiceAnswer();
-        // 判断是否添加了选项
-        if (answerList.isEmpty()) {
-            return Result.build(ResultEnum.ERROR.getCode(), "请添加选项！");
-        }
-        // 判断是否有多个正确答案
-        List<Boolean> trueList = answerList.stream().map(ChoiceAnswerDO::getAnswerTrue).collect(Collectors.toList());
-        int count = Collections.frequency(trueList, true);
-        if (count < 1) {
-            // 没有正确答案
-            return Result.build(ResultEnum.ERROR.getCode(), "多项选择题必须有正确答案！");
-        }
-
-        return updateChoice(choice, answerList);
-    }
-
-    /**
-     * 添加单选
-     *
-     * @param choice
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    protected Result addOrUpdateOneChoice(ChoiceDO choice) throws Exception {
-        // 添加选择题，然后获取选择题的选项进行添加
-        List<ChoiceAnswerDO> answerList = choice.getChoiceAnswer();
-        // 判断是否添加了选项
-        if (answerList.isEmpty()) {
-            return Result.build(ResultEnum.ERROR.getCode(), "请添加选项！");
-        }
-        // 判断是否有多个正确答案
-        List<Boolean> trueList = answerList.stream().map(ChoiceAnswerDO::getAnswerTrue).collect(Collectors.toList());
-        int count = Collections.frequency(trueList, true);
-        if (count != 1) {
-            // 不止一个正确答案或者没有正确答案
-            return Result.build(ResultEnum.ERROR.getCode(), "单项选择题必须只有一个正确答案！");
-        }
-
-        // 判断是修改还是添加
-        return updateChoice(choice, answerList);
-    }
-
-
-    private Result updateChoice(ChoiceDO choice, List<ChoiceAnswerDO> answerList) {
-        if (StringUtils.isBlank(choice.getChoiceId())) {
-            // 补全属性
-            choice.setChoiceId(idWorker.nextId() + "");
-            // 获取id，给选项每一项的题目id赋值
-            String choiceId = choice.getChoiceId();
-            answerList.forEach(e -> {
-                e.setAnswerChoice(choiceId);
-                e.setAnswerId(idWorker.nextId() + "");
-            });
-            choiceService.save(choice);
-            choiceAnswerService.saveBatch(answerList);
-            return Result.ok("添加成功！");
-        } else {
-
-            // 删除旧选项
-            choiceAnswerService.deleteOldAnswer(choice);
-
-            // 更新
-            choiceService.updateById(choice);
-            choiceAnswerService.updateBatchById(answerList);
-
-            // 查询所有的数据库中的答案，将上面的集合中清除这些答案，然后插入
-            ChoiceDO choiceDO = choiceService.getById(choice.getChoiceId());
-            // 查询所有的答案
-            String choiceId = choiceDO.getChoiceId();
-            QueryWrapper<ChoiceAnswerDO> wrapper = new QueryWrapper<ChoiceAnswerDO>()
-                    .eq("answer_choice", choiceId);
-
-            List<ChoiceAnswerDO> answerDOList = choiceAnswerService.list(wrapper);
-
-            // 删除所有更新成功的答案，剩下的就是新增的，批量添加一下
-            answerList.removeAll(answerDOList);
-
-            answerList.forEach(e -> {
-                e.setAnswerId(idWorker.nextId() + "");
-                e.setAnswerChoice(choiceId);
-            });
-
-            choiceAnswerService.saveBatch(answerList);
-
-            return Result.ok("修改成功！");
-        }
-    }
-
 
 }
 

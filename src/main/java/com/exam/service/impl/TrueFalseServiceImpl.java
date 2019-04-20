@@ -1,14 +1,12 @@
 package com.exam.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.exam.mapper.BankMapper;
+import com.exam.constant.OtherConstant;
 import com.exam.mapper.TrueFalseMapper;
-import com.exam.pojo.BankDO;
 import com.exam.pojo.Page;
 import com.exam.pojo.TrueFalseDO;
 import com.exam.service.TrueFalseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +24,6 @@ public class TrueFalseServiceImpl extends ServiceImpl<TrueFalseMapper, TrueFalse
 
     @Autowired
     private TrueFalseMapper trueFalseMapper;
-    @Value("${CURRENT_COUNT}")
-    private Integer CURRENT_COUNT;
 
 
     @Override
@@ -36,7 +32,7 @@ public class TrueFalseServiceImpl extends ServiceImpl<TrueFalseMapper, TrueFalse
         page.filterParams();
         // 设置每页显示条数
         if (page.getCurrentCount() == null) {
-            page.setCurrentCount(CURRENT_COUNT);
+            page.setCurrentCount(OtherConstant.CURRENT_COUNT);
         }
         // 计算索引
         Integer index = (page.getCurrentPage() - 1) * page.getCurrentCount();

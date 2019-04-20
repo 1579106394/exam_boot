@@ -1,6 +1,7 @@
 package com.exam.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -9,6 +10,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -24,7 +26,7 @@ public class CodeDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "code_id", type = IdType.AUTO)
+    @TableId(value = "code_id", type = IdType.INPUT)
     private String codeId;
 
     /**
@@ -63,6 +65,11 @@ public class CodeDO implements Serializable {
     private String codeKnow;
 
     /**
+     * 解析
+     */
+    private String codeResolve;
+
+    /**
      * 编译器，Java、C/C++、Python等
      */
     private String codeCompile;
@@ -78,6 +85,12 @@ public class CodeDO implements Serializable {
      */
     @TableLogic
     private Integer codeDelete;
+
+    @TableField(exist = false)
+    private List<CodeAnswerDO> answerList;
+
+    @TableField(exist = false)
+    private CompileDO compileDO;
 
     @Override
     public String toString() {

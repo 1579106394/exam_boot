@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
-import com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -65,7 +64,7 @@ public class RoleDO implements Serializable {
     private Integer roleDelete;
 
     @TableField(exist = false)
-    private List<RoleDO> list = Lists.newArrayList();
+    private List<RoleDO> list;
 
     @Override
     public String toString() {

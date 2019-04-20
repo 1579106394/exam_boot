@@ -1,23 +1,24 @@
 package com.exam.utils;
 
+import com.exam.constant.CharConstant;
+import com.exam.constant.NumberConstant;
+import com.exam.constant.PatternConstant;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 获取用户ip工具类
  * @author 杨德石
  */
-public abstract class IpUtils {
+public class IpUtils {
+
+    private IpUtils() {}
 
     public final static String ERROR_IP = "127.0.0.1";
-
-    public final static Pattern pattern = Pattern.
-            compile("(2[5][0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})");
 
     /**
      * 取外网IP
@@ -39,7 +40,7 @@ public abstract class IpUtils {
         }
 
         ip = ip.trim();
-        if (ip.length() > 23) {
+        if (ip.length() > NumberConstant.TWENTY_THREE) {
             ip = ip.substring(0, 23);
         }
 
@@ -56,18 +57,18 @@ public abstract class IpUtils {
 
         // 优先取X-Real-IP
         String ip = request.getHeader("X-Real-IP");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || CharConstant.UNKNOW.equalsIgnoreCase(ip)) {
             ip = request.getHeader("x-forwarded-for");
         }
 
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || CharConstant.UNKNOW.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
-            if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            if (CharConstant.ERROR_IP.equals(ip)) {
                 ip = ERROR_IP;
             }
         }
 
-        if ("unknown".equalsIgnoreCase(ip)) {
+        if (CharConstant.UNKNOW.equalsIgnoreCase(ip)) {
             ip = ERROR_IP;
             return ip;
         }
@@ -106,7 +107,7 @@ public abstract class IpUtils {
             return false;
         }
 
-        Matcher matcher = pattern.matcher(ip);
+        Matcher matcher = PatternConstant.IP_PATTERN.matcher(ip);
         boolean isValid = matcher.matches();
         return isValid;
     }

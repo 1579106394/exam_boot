@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 public class MySessionManager extends DefaultWebSessionManager {
 
-    private static final String Authorization = "Authorization";
+    private static final String AUTHORIZATION = "Authorization";
 
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 
@@ -27,7 +27,7 @@ public class MySessionManager extends DefaultWebSessionManager {
 
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
-        String id = WebUtils.toHttp(request).getHeader(Authorization);
+        String id = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
         //如果请求头中有 Authorization 则其值为sessionId
         if (!StringUtils.isBlank(id)) {
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, REFERENCED_SESSION_ID_SOURCE);

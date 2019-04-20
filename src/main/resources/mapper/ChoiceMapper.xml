@@ -65,9 +65,6 @@
     <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
         SELECT
         count(choice_id)
-        FROM (
-        SELECT
-        choice_id
         FROM
         ex_choice
         <where>
@@ -88,9 +85,6 @@
                 and choice_title like '%${params.choiceTitle}%'
             </if>
         </where>
-        ) ex_choice
-        LEFT JOIN ex_choice_answer ON choice_id = answer_choice
-        where answer_delete = 1
     </select>
 
 </mapper>

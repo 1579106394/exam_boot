@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
-import com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -85,7 +84,7 @@ public class ChoiceDO implements Serializable {
      * @return
      */
     @TableField(exist = false)
-    private List<ChoiceAnswerDO> choiceAnswer = Lists.newArrayList();
+    private List<ChoiceAnswerDO> choiceAnswer;
 
     /**
      * 正确答案

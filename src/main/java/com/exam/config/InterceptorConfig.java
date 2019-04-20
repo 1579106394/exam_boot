@@ -1,8 +1,8 @@
 package com.exam.config;
 
-import com.exam.interceptor.CORSInterceptor;
+import com.exam.constant.OtherConstant;
+import com.exam.interceptor.CorsInterceptor;
 import com.exam.interceptor.LoginInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -15,20 +15,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurationSupport {
 
-    @Value("${UPLOAD_URL}")
-    private String UPLOAD_URL;
-
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**", "/file/**");
-        registry.addInterceptor(new CORSInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**", "/file/**");
+        registry.addInterceptor(new CorsInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**", "/file/**");
         super.addInterceptors(registry);
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/file/**").addResourceLocations("file:" + UPLOAD_URL);
-        System.out.println("============================================" + "file:" + UPLOAD_URL);
+        registry.addResourceHandler("/file/**").addResourceLocations("file:" + OtherConstant.UPLOAD_URL);
+        System.out.println("============================================" + "file:" + OtherConstant.UPLOAD_URL);
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 }

@@ -1,5 +1,9 @@
 package com.exam.utils;
 
+import com.exam.constant.CharConstant;
+import com.exam.constant.NumberConstant;
+import com.exam.constant.OtherConstant;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +14,11 @@ import java.net.URLEncoder;
 
 /**
  * Cookie 工具类
+ * @author 杨德石
  */
-public abstract class CookieUtils {
+public class CookieUtils {
+
+    private CookieUtils() {}
 
     /**
      * 得到Cookie的值, 不编码
@@ -145,10 +152,11 @@ public abstract class CookieUtils {
             if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
             }
-            if (null != request) {// 设置域名的cookie
+            // 设置域名的cookie
+            if (null != request) {
                 String domainName = getDomainName(request);
                 System.out.println(domainName);
-                if (!"localhost".equals(domainName)) {
+                if (!OtherConstant.LOCAL_HOST.equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
             }
@@ -176,10 +184,11 @@ public abstract class CookieUtils {
             if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
             }
-            if (null != request) {// 设置域名的cookie
+            // 设置域名的cookie
+            if (null != request) {
                 String domainName = getDomainName(request);
                 System.out.println(domainName);
-                if (!"localhost".equals(domainName)) {
+                if (!OtherConstant.LOCAL_HOST.equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
             }
@@ -196,7 +205,7 @@ public abstract class CookieUtils {
     private static final String getDomainName(HttpServletRequest request) {
         String domainName = null;
         String serverName = request.getRequestURL().toString();
-        if (serverName == null || serverName.equals("")) {
+        if (serverName == null || "".equals(serverName)) {
             domainName = "";
         } else {
             serverName = serverName.toLowerCase();
@@ -205,10 +214,10 @@ public abstract class CookieUtils {
             serverName = serverName.substring(0, end);
             final String[] domains = serverName.split("\\.");
             int len = domains.length;
-            if (len > 3) {
+            if (len > NumberConstant.THREE) {
                 // www.xxx.com.cn
                 domainName = "." + domains[len - 3] + "." + domains[len - 2] + "." + domains[len - 1];
-            } else if (len <= 3 && len > 1) {
+            } else if (len <= NumberConstant.THREE && len > NumberConstant.ONE) {
                 // xxx.com or xxx.cn
                 domainName = "." + domains[len - 2] + "." + domains[len - 1];
             } else {
@@ -216,7 +225,7 @@ public abstract class CookieUtils {
             }
         }
 
-        if (domainName != null && domainName.indexOf(":") > 0) {
+        if (domainName != null && domainName.indexOf(CharConstant.CHAR_COLON) > 0) {
             String[] ary = domainName.split("\\:");
             domainName = ary[0];
         }

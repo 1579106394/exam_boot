@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * <p>
@@ -64,12 +65,30 @@ public class CompletionAnswerDO implements Serializable {
     @Override
     public String toString() {
         return "CompletionAnswerDO{" +
-        "answerId=" + answerId +
-        ", answerNumber=" + answerNumber +
-        ", answerContent=" + answerContent +
-        ", answerResolve=" + answerResolve +
-        ", answerVersion=" + answerVersion +
-        ", answerDelete=" + answerDelete +
-        "}";
+                "answerId=" + answerId +
+                ", answerNumber=" + answerNumber +
+                ", answerContent=" + answerContent +
+                ", answerResolve=" + answerResolve +
+                ", answerVersion=" + answerVersion +
+                ", answerDelete=" + answerDelete +
+                "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CompletionAnswerDO that = (CompletionAnswerDO) o;
+        return Objects.equals(answerId, that.answerId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(answerId);
     }
 }

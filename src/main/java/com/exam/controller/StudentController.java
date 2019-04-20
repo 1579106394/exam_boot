@@ -9,7 +9,7 @@ import com.exam.pojo.StudentDO;
 import com.exam.service.PwdService;
 import com.exam.service.StudentService;
 import com.exam.utils.IdWorker;
-import com.exam.utils.MD5Utils;
+import com.exam.utils.Md5Utils;
 import com.exam.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +62,7 @@ public class StudentController {
             String stuId = idWorker.nextId() + "";
             studentDO.setStuId(stuId);
             String plaintext = studentDO.getStuPassword();
-            String ciphertext = MD5Utils.toMD5(plaintext);
+            String ciphertext = Md5Utils.toMD5(plaintext);
             studentDO.setStuPassword(ciphertext);
             studentService.save(studentDO);
             // 生成密码表
@@ -99,7 +99,7 @@ public class StudentController {
             }
 
             String plaintext = studentDO.getStuPassword();
-            String ciphertext = MD5Utils.toMD5(plaintext);
+            String ciphertext = Md5Utils.toMD5(plaintext);
             studentDO.setStuPassword(ciphertext);
             studentService.updateById(studentDO);
 

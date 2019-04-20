@@ -11,6 +11,9 @@ import lombok.Getter;
 @Getter
 public enum TestEnum {
 
+    /**
+     * 组卷方式状态码
+     */
     MANUAL(1, "手动组卷"),
     INTELLIGENCE(2, "智能组卷")
     ;

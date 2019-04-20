@@ -1,7 +1,10 @@
 package com.exam.mapper;
 
+import com.exam.pojo.Page;
 import com.exam.pojo.QuestionDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,17 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface QuestionMapper extends BaseMapper<QuestionDO> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    List<QuestionDO> getListByPage(Page<QuestionDO> page);
+
+    /**
+     * 查询总数
+     * @param page
+     * @return
+     */
+    Integer getCountByPage(Page<QuestionDO> page);
 }

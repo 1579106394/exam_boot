@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * <p>
@@ -69,14 +70,32 @@ public class ChoiceAnswerDO implements Serializable {
     @Override
     public String toString() {
         return "ChoiceAnswerDO{" +
-        "answerId=" + answerId +
-        ", answerNumber=" + answerNumber +
-        ", answerContent=" + answerContent +
-        ", answerChoice=" + answerChoice +
-        ", answerTrue=" + answerTrue +
-        ", answerResolve=" + answerResolve +
-        ", answerVersion=" + answerVersion +
-        ", answerDelete=" + answerDelete +
-        "}";
+                "answerId=" + answerId +
+                ", answerNumber=" + answerNumber +
+                ", answerContent=" + answerContent +
+                ", answerChoice=" + answerChoice +
+                ", answerTrue=" + answerTrue +
+                ", answerResolve=" + answerResolve +
+                ", answerVersion=" + answerVersion +
+                ", answerDelete=" + answerDelete +
+                "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChoiceAnswerDO that = (ChoiceAnswerDO) o;
+        return Objects.equals(answerId, that.answerId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(answerId);
     }
 }
