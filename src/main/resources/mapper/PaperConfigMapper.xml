@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.PaperConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.PaperConfigDO">
+        <id column="config_id" property="configId"/>
+        <result column="config_paper" property="configPaper"/>
+        <result column="config_question_num" property="configQuestionNum"/>
+        <result column="config_score" property="configScore"/>
+        <result column="config_type" property="configType"/>
+        <result column="config_know" property="configKnow"/>
+        <result column="config_version" property="configVersion"/>
+        <result column="config_delete" property="configDelete"/>
+        <association property="type" javaType="com.exam.pojo.TypeDO">
+            <id column="type_id" property="typeId"/>
+            <result column="type_name" property="typeName"/>
+        </association>
+        <collection property="questionList" ofType="com.exam.pojo.PaperConfigQuestionDO">
+            <id column="id" property="id"/>
+            <result column="question_config" property="questionConfig"/>
+            <result column="question_id" property="questionId"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        config_id, config_paper, config_question_num, config_score, config_type, config_know, config_version, config_delete
+    </sql>
+    <select id="getByConfig" parameterType="com.exam.pojo.PaperConfigDO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from ex_paper_config
+        where
+        config_paper = #{configPaper}
+        and config_type = #{configType}
+        and config_know = #{configKnow}
+        and config_delete = 1
+    </select>
+
+    <select id="getQuestionNum" resultMap="BaseResultMap">
+        SELECT
+            config_type,
+            type_name,
+            count( question_id ) AS config_question_num,
+            score AS config_score
+        FROM
+            ex_paper_config
+            INNER JOIN ex_paper_config_question ON config_id = question_config
+            LEFT JOIN ex_type ON type_id = config_type
+            INNER JOIN ( SELECT config_id, sum( config_score ) AS score FROM ex_paper_config WHERE config_paper = #{value} GROUP BY config_type ) temp ON ex_paper_config.config_id = temp.config_id
+        WHERE
+            config_paper = #{value}
+        GROUP BY
+            config_type
+    </select>
+
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.CodeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.CodeDO">
+        <id column="code_id" property="codeId" />
+        <result column="code_title" property="codeTitle" />
+        <result column="code_imgs" property="codeImgs" />
+        <result column="code_type" property="codeType" />
+        <result column="code_score" property="codeScore" />
+        <result column="code_difficulty" property="codeDifficulty" />
+        <result column="code_bank" property="codeBank" />
+        <result column="code_know" property="codeKnow" />
+        <result column="code_compile" property="codeCompile" />
+        <result column="code_resolve" property="codeResolve" />
+        <result column="code_version" property="codeVersion" />
+        <result column="code_delete" property="codeDelete" />
+        <association property="compileDO" javaType="com.exam.pojo.CompileDO">
+            <id column="compile_id" property="compileId" />
+            <result column="compile_number" property="compileNumber" />
+            <result column="compile_name" property="compileName" />
+        </association>
+        <collection property="answerList" ofType="com.exam.pojo.CodeAnswerDO">
+            <id column="answer_id" property="answerId" />
+            <result column="answer_problem" property="answerProblem" />
+            <result column="answer_content" property="answerContent" />
+            <result column="answer_number" property="answerNumber" />
+            <result column="answer_code" property="answerCode" />
+            <result column="answer_score" property="answerScore" />
+            <result column="answer_resolve" property="answerResolve" />
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        code_id, code_title, code_imgs, code_resolve, code_type, code_score, code_difficulty, code_bank, code_know, code_compile, code_version, code_delete
+    </sql>
+
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number, answer_problem ,answer_content, answer_score
+        ,compile_id, compile_number, compile_name FROM (
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        ex_code
+        <where>
+            code_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and code_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and code_type = #{params.typeId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and code_know = #{params.knowId}
+            </if>
+            <if test="params.compileId!=null and params.compileId!=''">
+                and code_compile = #{params.compileId}
+            </if>
+            <if test="params.codeDifficulty!=null and params.codeDifficulty!=''">
+                and code_difficulty = #{params.codeDifficulty}
+            </if>
+            <if test="params.codeTitle!=null and params.codeTitle!=''">
+                and code_title like '%${params.codeTitle}%'
+            </if>
+        </where>
+        order by code_difficulty asc
+        limit #{index}, #{currentCount}
+        ) ex_code
+        LEFT JOIN ex_code_answer ON code_id = answer_code
+        LEFT JOIN ex_compile on code_compile = compile_id
+        where answer_delete = 1
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        SELECT
+        count(code_id)
+        FROM
+        ex_code
+        <where>
+            code_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and code_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and code_type = #{params.typeId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and code_know = #{params.knowId}
+            </if>
+            <if test="params.compileId!=null and params.compileId!=''">
+                and code_compile = #{params.compileId}
+            </if>
+            <if test="params.codeDifficulty!=null and params.codeDifficulty!=''">
+                and code_difficulty = #{params.codeDifficulty}
+            </if>
+            <if test="params.codeTitle!=null and params.codeTitle!=''">
+                and code_title like '%${params.codeTitle}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number, answer_problem ,answer_content, answer_score
+        ,compile_id, compile_number, compile_name
+        FROM
+        ex_code
+        LEFT JOIN ex_code_answer ON code_id = answer_code
+        LEFT JOIN ex_compile on code_compile = compile_id
+        where answer_delete = 1 and code_delete = 1
+        <foreach collection="list" item="id" open="and code_id in (" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

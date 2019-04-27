@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.TeacherMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.TeacherDO">
+        <id column="teacher_id" property="teacherId"/>
+        <result column="teacher_number" property="teacherNumber"/>
+        <result column="teacher_username" property="teacherUsername"/>
+        <result column="teacher_password" property="teacherPassword"/>
+        <result column="teacher_card" property="teacherCard"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="teacher_sex" property="teacherSex"/>
+        <result column="teacher_age" property="teacherAge"/>
+        <result column="teacher_job" property="teacherJob"/>
+        <result column="teacher_title" property="teacherTitle"/>
+        <result column="teacher_mobile" property="teacherMobile"/>
+        <result column="teacher_email" property="teacherEmail"/>
+        <result column="teacher_img" property="teacherImg"/>
+        <result column="teacher_entry_time" property="teacherEntryTime"/>
+        <result column="teacher_college" property="teacherCollege"/>
+        <result column="teacher_version" property="teacherVersion"/>
+        <result column="teacher_delete" property="teacherDelete"/>
+        <association property="job" javaType="com.exam.pojo.DictDO">
+            <id column="job_id" property="dictId"/>
+            <result column="job_name" property="dictName"/>
+        </association>
+        <association property="title" javaType="com.exam.pojo.DictDO">
+            <id column="title_id" property="dictId"/>
+            <result column="title_name" property="dictName"/>
+        </association>
+        <association property="college" javaType="com.exam.pojo.DictDO">
+            <id column="college_id" property="dictId"/>
+            <result column="college_name" property="dictName"/>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        teacher_id, teacher_number, teacher_username, teacher_password, teacher_card, teacher_name, teacher_sex, teacher_age, teacher_job, teacher_title, teacher_mobile, teacher_email, teacher_img, teacher_entry_time, teacher_college, teacher_version, teacher_delete
+    </sql>
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,job.dict_id as job_id, job.dict_name as job_name
+        ,title.dict_id as title_id, title.dict_name as title_name
+        ,college.dict_id as college_id, college.dict_name as college_name
+        from ex_teacher
+        inner join ex_dict job on teacher_job = job.dict_id
+        inner join ex_dict title on teacher_title = title.dict_id
+        inner join ex_dict college on teacher_college = college.dict_id
+        <where>
+            teacher_delete = 1
+            <if test="params.teacherNumber!='' and params.teacherNumber!=null">
+                and teacher_number like '%${params.teacherNumber}%'
+            </if>
+            <if test="params.teacherCard!='' and params.teacherCard!=null">
+                and teacher_card like '%${params.teacherCard}%'
+            </if>
+            <if test="params.teacherName!='' and params.teacherName!=null">
+                and teacher_name like '%${params.teacherName}%'
+            </if>
+            <if test="params.teacherMobile!='' and params.teacherMobile!=null">
+                and teacher_mobile like '%${params.teacherMobile}%'
+            </if>
+            <if test="params.teacherEmail!='' and params.teacherEmail!=null">
+                and teacher_email like '%${params.teacherEmail}%'
+            </if>
+            <if test="params.teacherSex!='' and params.teacherSex!=null">
+                and teacher_sex = #{params.teacherSex}
+            </if>
+            <if test="params.jobId!='' and params.jobId!=null">
+                and job.dict_id = #{params.jobId}
+            </if>
+            <if test="params.titleId!='' and params.titleId!=null">
+                and title.dict_id = #{params.titleId}
+            </if>
+            <if test="params.collegeId!='' and params.collegeId!=null">
+                and college.dict_id = #{params.collegeId}
+            </if>
+            <if test="params.startTime!='' and params.startTime!=null and params.endTime != '' and params.endTime != null">
+                and teacher_entry_time <![CDATA[ >= ]]> #{params.startTime}
+                and teacher_entry_time <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+        </where>
+        <if test="sortName!=null and sortName!=''">
+            order by ${sortName} ${sortOrder}
+        </if>
+        <if test="sortName==null or sortName==''">
+            order by teacher_entry_time desc
+        </if>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(teacher_id)
+        from ex_teacher
+        inner join ex_dict job on teacher_job = job.dict_id
+        inner join ex_dict title on teacher_title = title.dict_id
+        inner join ex_dict college on teacher_college = college.dict_id
+        <where>
+            teacher_delete = 1
+            <if test="params.teacherNumber!='' and params.teacherNumber!=null">
+                and teacher_number like '%${params.teacherNumber}%'
+            </if>
+            <if test="params.teacherCard!='' and params.teacherCard!=null">
+                and teacher_card like '%${params.teacherCard}%'
+            </if>
+            <if test="params.teacherName!='' and params.teacherName!=null">
+                and teacher_name like '%${params.teacherName}%'
+            </if>
+            <if test="params.teacherMobile!='' and params.teacherMobile!=null">
+                and teacher_mobile like '%${params.teacherMobile}%'
+            </if>
+            <if test="params.teacherEmail!='' and params.teacherEmail!=null">
+                and teacher_email like '%${params.teacherEmail}%'
+            </if>
+            <if test="params.teacherSex!='' and params.teacherSex!=null">
+                and teacher_sex = #{params.teacherSex}
+            </if>
+            <if test="params.jobId!='' and params.jobId!=null">
+                and job.dict_id = #{params.jobId}
+            </if>
+            <if test="params.titleId!='' and params.titleId!=null">
+                and title.dict_id = #{params.titleId}
+            </if>
+            <if test="params.collegeId!='' and params.collegeId!=null">
+                and college.dict_id = #{params.collegeId}
+            </if>
+            <if test="params.startTime!='' and params.startTime!=null and params.endTime != '' and params.endTime != null">
+                and teacher_entry_time <![CDATA[ >= ]]> #{params.startTime}
+                and teacher_entry_time <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.DictMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.DictDO">
+        <id column="dict_id" property="dictId"/>
+        <result column="dict_name" property="dictName"/>
+        <result column="dict_type" property="dictType"/>
+        <result column="dict_father" property="dictFather"/>
+        <result column="dict_version" property="dictVersion"/>
+        <result column="dict_delete" property="dictDelete"/>
+        <association property="father" javaType="com.exam.pojo.DictDO">
+            <id column="father_id" property="dictId"/>
+            <result column="father_name" property="dictName"/>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        child.dict_id, child.dict_name, child.dict_type, child.dict_version, child.dict_delete
+    </sql>
+
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,father.dict_name father_name
+        from ex_dict child left join ex_dict father
+        on child.dict_father = father.dict_id
+        <where>
+            child.dict_delete = 1
+            <if test="params.dictType!=null and params.dictType!=''">
+                and child.dict_type = #{params.dictType}
+            </if>
+            <if test="params.dictName!=null and params.dictName!=''">
+                and child.dict_name like '%${params.dictName}%'
+            </if>
+            <if test="params.fatherName!=null and params.fatherName!=''">
+                and father.dict_name like '%${params.fatherName}%'
+            </if>
+        </where>
+        <if test="sortName != null and sortName != ''">
+            order by ${sortName} ${sortOrder}
+        </if>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select count(child.dict_id)
+        from ex_dict child left join ex_dict father
+        on child.dict_father = father.dict_id
+        <where>
+            child.dict_delete = 1
+            <if test="params.dictType!=null and params.dictType!=''">
+                and child.dict_type = #{params.dictType}
+            </if>
+            <if test="params.dictName!=null and params.dictName!=''">
+                and child.dict_name like '%${params.dictName}%'
+            </if>
+            <if test="params.fatherName!=null and params.fatherName!=''">
+                and father.dict_name like '%${params.fatherName}%'
+            </if>
+        </where>
+    </select>
+    <select id="getByFather" resultType="com.exam.pojo.DictDO">
+        select *
+        from ex_dict
+        where dict_father = #{value}
+        and dict_delete = 1
+    </select>
+
+</mapper>

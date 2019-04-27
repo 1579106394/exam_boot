@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.QuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.QuestionDO">
+        <id column="question_id" property="questionId"/>
+        <result column="question_title" property="questionTitle"/>
+        <result column="question_img" property="questionImg"/>
+        <result column="question_type" property="questionType"/>
+        <result column="question_score" property="questionScore"/>
+        <result column="question_difficulty" property="questionDifficulty"/>
+        <result column="question_bank" property="questionBank"/>
+        <result column="question_style" property="questionStyle"/>
+        <result column="question_know" property="questionKnow"/>
+        <result column="question_resolve" property="questionResolve"/>
+        <result column="question_version" property="questionVersion"/>
+        <result column="question_delete" property="questionDelete"/>
+        <collection property="answerList" ofType="com.exam.pojo.QuestionAnswerDO">
+            <id column="answer_id" property="answerId"/>
+            <result column="answer_number" property="answerNumber"/>
+            <result column="answer_problem" property="answerProblem"/>
+            <result column="answer_content" property="answerContent"/>
+            <result column="answer_score" property="answerScore"/>
+            <result column="answer_question" property="answerQuestion"/>
+            <result column="answer_resolve" property="answerResolve"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        question_id, question_title, question_img, question_type, question_score, question_difficulty, question_resolve, question_bank, question_style, question_know, question_version, question_delete
+    </sql>
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number, answer_problem ,answer_content, answer_score FROM (
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        ex_question
+        <where>
+            question_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and question_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and question_type = #{params.typeId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and question_know = #{params.knowId}
+            </if>
+            <if test="params.questionDifficulty!=null and params.questionDifficulty!=''">
+                and question_difficulty = #{params.questionDifficulty}
+            </if>
+            <if test="params.questionTitle!=null and params.questionTitle!=''">
+                and question_title like '%${params.questionTitle}%'
+            </if>
+        </where>
+        order by question_difficulty asc
+        limit #{index}, #{currentCount}
+        ) ex_question
+        LEFT JOIN ex_question_answer ON question_id = answer_question
+        where answer_delete = 1
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        SELECT
+        count(question_id)
+        FROM
+        ex_question
+        <where>
+            question_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and question_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and question_type = #{params.typeId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and question_know = #{params.knowId}
+            </if>
+            <if test="params.questionDifficulty!=null and params.questionDifficulty!=''">
+                and question_difficulty = #{params.questionDifficulty}
+            </if>
+            <if test="params.questionTitle!=null and params.questionTitle!=''">
+                and question_title like '%${params.questionTitle}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number, answer_problem ,answer_content, answer_score
+        FROM
+        ex_question
+        LEFT JOIN ex_question_answer ON question_id = answer_question
+        where answer_delete = 1 and question_delete = 1
+        <foreach collection="list" item="id" open="and question_id in (" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

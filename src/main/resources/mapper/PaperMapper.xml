@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.PaperMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.PaperDO">
+        <id column="paper_id" property="paperId"/>
+        <result column="paper_title" property="paperTitle"/>
+        <result column="paper_start_year" property="paperStartYear"/>
+        <result column="paper_end_year" property="paperEndYear"/>
+        <result column="paper_seme" property="paperSeme"/>
+        <result column="paper_comment" property="paperComment"/>
+        <result column="paper_college" property="paperCollege"/>
+        <result column="paper_major" property="paperMajor"/>
+        <result column="paper_bank" property="paperBank"/>
+        <result column="paper_flag" property="paperFlag"/>
+        <result column="paper_style" property="paperStyle"/>
+        <result column="paper_type" property="paperType"/>
+        <result column="paper_difficulty" property="paperDifficulty"/>
+        <result column="paper_score" property="paperScore"/>
+        <result column="paper_question_num" property="paperQuestionNum"/>
+        <result column="paper_submit" property="paperSubmit"/>
+        <result column="paper_download" property="paperDownload"/>
+        <result column="paper_question_num" property="paperQuestionNum"/>
+        <result column="paper_create_time" property="paperCreateTime"/>
+        <result column="paper_update_time" property="paperUpdateTime"/>
+        <result column="paper_version" property="paperVersion"/>
+        <result column="paper_delete" property="paperDelete"/>
+        <association property="college" javaType="com.exam.pojo.DictDO">
+            <id column="college_id" property="dictId"/>
+            <result column="college_name" property="dictName"/>
+        </association>
+        <association property="major" javaType="com.exam.pojo.DictDO">
+            <id column="major_id" property="dictId"/>
+            <result column="major_name" property="dictName"/>
+        </association>
+        <association property="bank" javaType="com.exam.pojo.BankDO">
+            <id column="bank_id" property="bankId"/>
+            <result column="bank_name" property="bankName"/>
+        </association>
+        <collection property="configList" resultMap="com.exam.mapper.PaperConfigMapper.BaseResultMap">
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        paper_id, paper_title, paper_question_num, paper_seme, paper_start_year, paper_end_year, paper_submit,
+        paper_comment, paper_college, paper_major, paper_bank, paper_flag, paper_style, paper_type, paper_download,
+        paper_difficulty, paper_score, paper_create_time, paper_update_time, paper_version, paper_delete
+    </sql>
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,college.dict_id college_id, college.dict_name college_name
+        ,major.dict_id major_id, major.dict_name major_name
+        ,bank_id, bank_name
+        from ex_paper
+        inner join ex_dict college on college.dict_id = paper_college
+        inner join ex_dict major on major.dict_id = paper_major
+        inner join ex_bank on bank_id = paper_bank
+        <where>
+            paper_delete = 1
+            <if test="params.paperTitle!=null and params.paperTitle!=''">
+                and paper_title like '%${params.paperTitle}%'
+            </if>
+            <if test="params.paperCollege!=null and params.paperCollege!=''">
+                and paper_college = #{params.paperCollege}
+            </if>
+            <if test="params.paperMajor!=null and params.paperMajor!=''">
+                and paper_major = #{params.paperMajor}
+            </if>
+            <if test="params.paperSeme!=null and params.paperSeme!=''">
+                and paper_seme = #{params.paperSeme}
+            </if>
+            <if test="params.bankId!=null and params.bankId!=''">
+                and paper_bank = #{params.bankId}
+            </if>
+            <if test="params.paperFlag!=null and params.paperFlag!=''">
+                and paper_flag = #{params.paperFlag}
+            </if>
+            <if test="params.paperStyle!=null and params.paperStyle!=''">
+                and paper_style = #{params.paperStyle}
+            </if>
+            <if test="params.paperType!=null and params.paperType!=''">
+                and paper_type = #{params.paperType}
+            </if>
+            <if test="params.paperDifficulty!=null and params.paperDifficulty!=''">
+                and paper_difficulty = #{params.paperDifficulty}
+            </if>
+            <if test="params.startTime!='' and params.startTime!=null and params.endTime != '' and params.endTime != null">
+                and paper_create_time <![CDATA[ >= ]]> #{params.startTime}
+                and paper_create_time <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+            <if test="params.paperStartYear!='' and params.paperStartYear!=null and params.paperEndYear!='' and params.paperEndYear!=null">
+                and paper_end_year <![CDATA[ >= ]]> #{params.paperStartYear}
+                and paper_end_year <![CDATA[ <= ]]> #{params.paperEndYear}
+            </if>
+        </where>
+        <if test="sortName == null or sortName == ''">
+            order by paper_update_time desc
+        </if>
+        <if test="sortName != null and sortName != ''">
+            order by ${sortName} ${sortOrder}
+        </if>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(paper_id)
+        from ex_paper
+        inner join ex_dict college on college.dict_id = paper_college
+        inner join ex_dict major on major.dict_id = paper_major
+        inner join ex_bank on bank_id = paper_bank
+        <where>
+            paper_delete = 1
+            <if test="params.paperTitle!=null and params.paperTitle!=''">
+                and paper_title like '%${params.paperTitle}%'
+            </if>
+            <if test="params.paperCollege!=null and params.paperCollege!=''">
+                and paper_college = #{params.paperCollege}
+            </if>
+            <if test="params.paperMajor!=null and params.paperMajor!=''">
+                and paper_major = #{params.paperMajor}
+            </if>
+            <if test="params.paperSeme!=null and params.paperSeme!=''">
+                and paper_seme = #{params.paperSeme}
+            </if>
+            <if test="params.bankId!=null and params.bankId!=''">
+                and paper_bank = #{params.bankId}
+            </if>
+            <if test="params.paperFlag!=null and params.paperFlag!=''">
+                and paper_flag = #{params.paperFlag}
+            </if>
+            <if test="params.paperStyle!=null and params.paperStyle!=''">
+                and paper_style = #{params.paperStyle}
+            </if>
+            <if test="params.paperType!=null and params.paperType!=''">
+                and paper_type = #{params.paperType}
+            </if>
+            <if test="params.paperDifficulty!=null and params.paperDifficulty!=''">
+                and paper_difficulty = #{params.paperDifficulty}
+            </if>
+            <if test="params.startTime!='' and params.startTime!=null and params.endTime != '' and params.endTime != null">
+                and paper_create_time <![CDATA[ >= ]]> #{params.startTime}
+                and paper_create_time <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+            <if test="params.paperStartYear!='' and params.paperStartYear!=null and params.paperEndYear!='' and params.paperEndYear!=null">
+                and paper_end_year <![CDATA[ >= ]]> #{params.paperStartYear}
+                and paper_end_year <![CDATA[ <= ]]> #{params.paperEndYear}
+            </if>
+        </where>
+    </select>
+
+    <select id="getPaperQuestion" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,config_id, config_question_num, config_score, config_type
+        ,type_name, question_id
+        ,bank_id, bank_name
+        from ex_paper
+        inner join ex_paper_config on paper_id = config_paper
+        inner join ex_paper_config_question on config_id = question_config
+        inner join ex_type on type_id = config_type
+        inner join ex_bank on bank_id = paper_bank
+        where paper_id = #{value}
+    </select>
+
+</mapper>

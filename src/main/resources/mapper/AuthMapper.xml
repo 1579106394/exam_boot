@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.AuthMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.AuthDO">
+        <id column="auth_id" property="authId" />
+        <result column="auth_name" property="authName" />
+        <result column="auth_code" property="authCode" />
+        <result column="auth_father" property="authFather" />
+        <result column="auth_menu" property="authMenu" />
+        <result column="auth_url" property="authUrl" />
+        <result column="auth_index" property="authIndex" />
+        <result column="auth_ismenu" property="authIsmenu" />
+        <result column="auth_version" property="authVersion" />
+        <result column="auth_delete" property="authDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        auth_id, auth_name, auth_code, auth_father, auth_menu, auth_url, auth_index, auth_ismenu, auth_version, auth_delete
+    </sql>
+
+</mapper>

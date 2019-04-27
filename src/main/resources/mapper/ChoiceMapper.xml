@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.ChoiceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.ChoiceDO">
+        <id column="choice_id" property="choiceId"/>
+        <result column="choice_title" property="choiceTitle"/>
+        <result column="choice_type" property="choiceType"/>
+        <result column="choice_score" property="choiceScore"/>
+        <result column="choice_difficulty" property="choiceDifficulty"/>
+        <result column="choice_bank" property="choiceBank"/>
+        <result column="choice_know" property="choiceKnow"/>
+        <result column="choice_resolve" property="choiceResolve"/>
+        <result column="choice_version" property="choiceVersion"/>
+        <result column="choice_delete" property="choiceDelete"/>
+        <collection property="choiceAnswer" ofType="com.exam.pojo.ChoiceAnswerDO">
+            <id column="answer_id" property="answerId"/>
+            <result column="answer_number" property="answerNumber"/>
+            <result column="answer_content" property="answerContent"/>
+            <result column="answer_choice" property="answerChoice"/>
+            <result column="answer_true" property="answerTrue"/>
+            <result column="answer_resolve" property="answerResolve"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        ,answer_number ,answer_content ,answer_true FROM (
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        ex_choice
+        <where>
+            choice_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and choice_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and choice_type = #{params.typeId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and choice_know = #{params.knowId}
+            </if>
+            <if test="params.difficulty!=null and params.difficulty!=''">
+                and choice_difficulty = #{params.difficulty}
+            </if>
+            <if test="params.title!=null and params.title!=''">
+                and choice_title like '%${params.title}%'
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+        ) ex_choice
+        LEFT JOIN ex_choice_answer ON choice_id = answer_choice
+        where answer_delete = 1
+        <if test="sortName!=null and sortName!=''">
+            order by ${sortName} ${sortOrder}
+        </if>
+        <if test="sortName==null or sortName==''">
+            order by choice_difficulty asc
+        </if>
+    </select>
+
+    <sql id="Base_Column_List">
+        choice_id, choice_title, choice_type, choice_score, choice_difficulty, choice_bank, choice_know, choice_resolve, choice_version, choice_delete
+    </sql>
+
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        SELECT
+        count(choice_id)
+        FROM
+        ex_choice
+        <where>
+            choice_delete = 1
+            <if test="params.bankId!=null and params.bankId!=''">
+                and choice_bank = #{params.bankId}
+            </if>
+            <if test="params.typeId!=null and params.typeId!=''">
+                and choice_type = #{params.typeId}
+            </if>
+            <if test="params.knowId!=null and params.knowId!=''">
+                and choice_know = #{params.knowId}
+            </if>
+            <if test="params.difficulty!=null and params.difficulty!=''">
+                and choice_difficulty = #{params.difficulty}
+            </if>
+            <if test="params.title!=null and params.title!=''">
+                and choice_title like '%${params.title}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getListByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        ,answer_number ,answer_content ,answer_true
+        from ex_choice
+        inner join ex_choice_answer
+        on choice_id = answer_choice
+        where
+        choice_delete = 1
+        and answer_delete = 1
+        and choice_type = #{choiceType}
+        <foreach collection="choiceIds" open="and choice_id in (" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

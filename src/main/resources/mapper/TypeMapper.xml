@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.TypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.exam.pojo.TypeDO">
+        <id column="type_id" property="typeId" />
+        <result column="type_name" property="typeName" />
+        <result column="type_version" property="typeVersion" />
+        <result column="type_delete" property="typeDelete" />
+        <result column="bank_id" property="bankId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        type_id, type_name, type_version, type_delete
+    </sql>
+    <select id="getListByPage" parameterType="com.exam.pojo.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from ex_type
+        <where>
+            type_delete = 1
+            <if test="params.typeName!=null and params.typeName!=''">
+                and type_name like '%${params.typeName}%'
+            </if>
+        </where>
+        <if test="sortName!=null and sortName!=''">
+            order by ${sortName} ${sortOrder}
+        </if>
+        limit #{index}, #{currentCount}
+    </select>
+    <select id="getCountByPage" parameterType="com.exam.pojo.Page" resultType="java.lang.Integer">
+        select
+        count(*)
+        from ex_type
+        <where>
+            type_delete = 1
+            <if test="params.typeName!=null and params.typeName!=''">
+                and type_name like '%${params.typeName}%'
+            </if>
+        </where>
+    </select>
+</mapper>
